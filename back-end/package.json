@@ -1,0 +1,30 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "back-end directory for PennLFG, a MERN-stack app",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cis350/Team-8-alain-sem-adam-abhinav-gabe.git"
+  },
+  "keywords": [
+    "mongodb",
+    "expressjs",
+    "nodejs"
+  ],
+  "author": "Alain Welliver <alainw@seas.upenn.edu>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cis350/Team-8-alain-sem-adam-abhinav-gabe/issues"
+  },
+  "homepage": "https://github.com/cis350/Team-8-alain-sem-adam-abhinav-gabe#readme",
+  "dependencies": {
+    "eslint": "^8.57.0",
+    "express": "^4.19.2",
+    "jsdoc": "^4.0.2",
+    "mongodb": "^6.5.0"
+  }
+}
