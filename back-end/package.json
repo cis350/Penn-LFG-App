@@ -2,10 +2,10 @@
   "name": "back-end",
   "version": "1.0.0",
   "description": "back-end directory for PennLFG, a MERN-stack app",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "jest --coverage",
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "jest": {
     "testEnvironment": "node"
