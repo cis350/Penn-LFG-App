@@ -1,9 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const port = 3000;
+
+const secretKey = 'c1edf6d2f856bd9db8eba0be38f907055319d63625c0d4c068389de3232e1473';
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
@@ -32,6 +35,10 @@ const mongoDBRequest = async (action, params) => {
 app.post('/register', async (req, res) => {
     const { username, password, fname, lname } = req.body;
 
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required' });
+    }
+
     // First, check if a user with the given username already exists
     const checkUserParams = {
         collection: 'Users',
@@ -58,7 +65,14 @@ app.post('/register', async (req, res) => {
     const { success, data, error } = await mongoDBRequest('insertOne', params);
 
     if (success) {
-        res.status(201).json({ message: 'User registered successfully', data });
+        // Assuming `data` contains the newly created user's ID (`_id`), adjust as necessary
+        const token = jwt.sign(
+            { userId: data.insertedId, username: username }, // Use the insertedId from the response
+            secretKey,
+            { expiresIn: '1h' }
+        );
+
+        res.status(201).json({ message: 'User registered successfully', token });
     } else {
         res.status(500).json({ message: 'Error registering user', error });
     }
@@ -68,6 +82,11 @@ app.post('/register', async (req, res) => {
 // Login endpoint
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
+
+    // Checking for the presence of username and password
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required' });
+    }
 
   const params = {
     collection: 'Users',
@@ -80,7 +99,14 @@ app.post('/login', async (req, res) => {
 
   if (success && data.document) {
     // TODO: Generate and send back a token instead of user data
-    res.status(200).json({ message: 'User logged in successfully', data: data.document });
+
+    const token = jwt.sign(
+      { userId: data.document._id, username: data.document.username },
+      secretKey,
+      { expiresIn: '1h' } // Token is valid for 1 hour
+    );
+
+    res.status(200).json({ message: 'User logged in successfully', token });
   } else {
     res.status(401).json({ message: 'Invalid credentials' });
   }
@@ -94,4 +120,4 @@ if (require.main === module) {
     });
   }
   
-  module.exports = { app, mongoDBRequest };
+module.exports = { app, mongoDBRequest };
