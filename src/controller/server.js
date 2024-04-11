@@ -6,8 +6,6 @@ const { ObjectId } = require('mongodb');
 const dbUtils = require('./dbUtils');
 const dbOperations = require('./users');
 
-//const { closeMongoDBConnection, getDB } = require('./dbUtils');
-
 const app = express();
 
 const secretKey = 'c1edf6d2f856bd9db8eba0be38f907055319d63625c0d4c068389de3232e1473';
