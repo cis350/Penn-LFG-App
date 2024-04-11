@@ -3,8 +3,7 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 
-const app = express();
-const port = 3000;
+const web_app = express();
 
 const secretKey = 'c1edf6d2f856bd9db8eba0be38f907055319d63625c0d4c068389de3232e1473';
 
@@ -112,12 +111,12 @@ app.post('/login', async (req, res) => {
   }
 });
 
-if (require.main === module) {
-    // Only start the server if the file is run directly
-    const port = 3000;
-    app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
-  }
+// if (require.main === module) {
+//     // Only start the server if the file is run directly
+//     const port = 3000;
+//     app.listen(port, () => {
+//       console.log(`Server running on port ${port}`);
+//     });
+//   }
   
-module.exports = { app, mongoDBRequest };
+module.exports = web_app;
