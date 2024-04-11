@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.26% </span>
+                <span class="strong">69.56% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>36/46</span>
+                <span class='fraction'>32/46</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.33% </span>
+                <span class="strong">54.16% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>14/24</span>
+                <span class='fraction'>13/24</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.26% </span>
+                <span class="strong">69.56% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>36/46</span>
+                <span class='fraction'>32/46</span>
             </div>
         
             
@@ -204,14 +204,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -223,21 +223,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -257,9 +242,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -358,31 +358,31 @@ app.post('/register', async (req, res) =&gt; {
 &nbsp;
     const checkUserResult = await mongoDBRequest('findOne', checkUserParams);
 &nbsp;
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (checkUserResult.success &amp;&amp; checkUserResult.data.document) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (checkUserResult.success &amp;&amp; checkUserResult.data.document) {
         // If a user is found, return an error response
-<span class="cstat-no" title="statement not covered" >        return res.status(409).json({ message: 'Username already exists' });</span>
+        return res.status(409).json({ message: 'Username already exists' });
     }
 &nbsp;
     // If no user is found, proceed with registration
-    const params = {
+    const params = <span class="cstat-no" title="statement not covered" >{</span>
         collection: 'Users',
         database: 'PennLFG',
         dataSource,
         document: { username, password, fname, lname }, // TODO: Consider hashing the password before sending
     };
 &nbsp;
-    const { success, data, error } = await mongoDBRequest('insertOne', params);
+    const { success, data, error } = <span class="cstat-no" title="statement not covered" >await mongoDBRequest('insertOne', params);</span>
 &nbsp;
-    if (success) {
+<span class="cstat-no" title="statement not covered" >    if (success) {</span>
         // Assuming `data` contains the newly created user's ID (`_id`), adjust as necessary
-        const token = jwt.sign(
+        const token = <span class="cstat-no" title="statement not covered" >jwt.sign(</span>
             { userId: data.insertedId, username: username }, // Use the insertedId from the response
             secretKey,
             { expiresIn: '1h' }
         );
 &nbsp;
-        res.status(201).json({ message: 'User registered successfully', token });
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+<span class="cstat-no" title="statement not covered" >        res.status(201).json({ message: 'User registered successfully', token });</span>
+    } else {
 <span class="cstat-no" title="statement not covered" >        res.status(500).json({ message: 'Error registering user', error });</span>
     }
 });
@@ -429,14 +429,14 @@ app.post('/login', async (req, res) =&gt; {
     });
   }
   
-  module.exports = { app, mongoDBRequest };</pre></td></tr></table></pre>
+module.exports = { app, mongoDBRequest };</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-04-10T23:48:38.539Z
+                at 2024-04-11T18:57:40.859Z
             </div>
         <script src="prettify.js"></script>
         <script>

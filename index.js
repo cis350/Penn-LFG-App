@@ -1,4 +1,4 @@
-const backendController = require('./controller/server');
+const backendController = require('./src/controller/server');
 
 const port = 8080;
 

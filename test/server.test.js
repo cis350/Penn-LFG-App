@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { app } = require('../controllers/server');
+const { app } = require('../src/controller/server');
 const jwt = require('jsonwebtoken');
 
 const secretKey = 'c1edf6d2f856bd9db8eba0be38f907055319d63625c0d4c068389de3232e1473'; // Use the same secret key as in your app
