@@ -2,8 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const { ObjectId } = require('mongodb');
+const dbUtils = require('./dbUtils');
+const dbOperations = require('./users');
 
-const web_app = express();
+//const { closeMongoDBConnection, getDB } = require('./dbUtils');
+
+const app = express();
 
 const secretKey = 'c1edf6d2f856bd9db8eba0be38f907055319d63625c0d4c068389de3232e1473';
 
@@ -46,7 +51,7 @@ app.post('/register', async (req, res) => {
         filter: { username } // Check for existing username
     };
 
-    const checkUserResult = await mongoDBRequest('findOne', checkUserParams);
+    const checkUserResult = await dbOperations.('findOne', checkUserParams);
 
     if (checkUserResult.success && checkUserResult.data.document) {
         // If a user is found, return an error response
@@ -61,7 +66,7 @@ app.post('/register', async (req, res) => {
         document: { username, password, fname, lname }, // TODO: Consider hashing the password before sending
     };
 
-    const { success, data, error } = await mongoDBRequest('insertOne', params);
+    const { success, data, error } = await dbOperations('insertOne', params);
 
     if (success) {
         // Assuming `data` contains the newly created user's ID (`_id`), adjust as necessary
@@ -119,4 +124,4 @@ app.post('/login', async (req, res) => {
 //     });
 //   }
   
-module.exports = web_app;
+module.exports = app;
