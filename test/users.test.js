@@ -1,10 +1,18 @@
 const request = require('supertest');
 const { closeMongoDBConnection, connect } = require('../src/model/dbUtils');
-const {webapp, mongodb} = require('../src/controller/server');
+const {app} = require('../src/controller/server');
+const users = require('../src/model/users');
 
+// const {getAllUsers} = require('../src/model/users')
+const newUser = {
+  username: 'drake',
+  password: 'jcole',
+  fname: 'Adam',
+  lname: 'Nomani'
+};
 // import test utilities function
 const {
-  isInArray, testUser, insertTestDataToDB, deleteTestDataFromDB,
+  getDataFromDB, insertTestDataToDB, deleteTestDataFromDB,
 } = require('./testUtils');
 
 // TEST POST ENDPOINT
@@ -17,7 +25,6 @@ describe('GET users(s) endpoint integration test', () => {
   let client; // local mongo connection
   const dbName = 'PennLFG';
   let db;
-  let testUserID;
 
   /**
      * Make sure that the data is in the DB before running
@@ -25,11 +32,10 @@ describe('GET users(s) endpoint integration test', () => {
      * connect to the DB
      */
   beforeAll(async () => {
+    
     client = await connect();
     db = client.db(dbName);
 
-    // add test user to mongodb
-    testUserID = await insertTestDataToDB(db, testUser);
   });
 
   /**
@@ -38,36 +44,22 @@ describe('GET users(s) endpoint integration test', () => {
  */
   afterAll(async () => {
     try {
-      await deleteTestDataFromDB(db, testUser.username);
       await closeMongoDBConnection(); // mongo client that started server.
     } catch (err) {
       return err;
     }
   });
 
-//   test('Get all users endpoint status code and data', async () => {
-//     const resp = await request(webapp).get('/users/');
-//     expect(resp.status).toEqual(200);
-//     expect(resp.type).toBe('application/json');
-//     const usersList = JSON.parse(resp.text).data;
-//     // testuser is in the response
-//     // matching nested structures can be frustrating!
-//     // expect(usersList).toEqual(expect.arrayContaining([{ _id: testUserID, ...testUser }]));
-//     expect(isInArray(usersList, testUserID)).toBe(true);
-//   });
+  test('Register and delete user', async () => {
+    const response = await request(app)
+        .post('/register')
+        .send(newUser)
+    console.log(response);
 
-//   test('Get: status code and data', async () => {
-//     const resp = await request(webapp).get(`/user/${testUserID}`);
-//     expect(resp.status).toEqual(200);
-//     expect(resp.type).toBe('application/json');
-//     const user = JSON.parse(resp.text).data;
-//     // testStudent is in the response
-//     expect(JSON.stringify(user)).toBe(JSON.stringify({ _id: testUserID, ...testUser }));
-//   });
-
-//   test('user not in db status code 404', async () => {
-//     const resp = await request(webapp).get('/user/1');
-//     expect(resp.status).toEqual(404);
-//     expect(resp.type).toBe('application/json');
-//   });
+    let data = await getDataFromDB(db);
+    expect(data.some(user => user.username === 'drake' && user.password === 'jcole' && user.fname === 'Adam' && user.lname === 'Nomani')).toBe(true);
+    await deleteTestDataFromDB(db, newUser.username);
+    data = await getDataFromDB(db);
+    expect(data.some(user => user.username === 'drake')).toBe(false);
+  });
 });

@@ -4,6 +4,8 @@
 const testUser = {
   username: 'testUser',
   password: 'cis3500',
+  fname: 'Adam',
+  lname: 'Nomani'
 };
 /**
  * Adds a test student to the DB
@@ -25,7 +27,6 @@ const deleteTestDataFromDB = async (db, testData) => {
   try {
     const result = await db.collection('Users').deleteMany({ username: testData });
     const { deletedCount } = result;
-
     if (deletedCount === 1) {
       console.log('info', 'Successfully deleted test student');
     } else {
@@ -37,27 +38,23 @@ const deleteTestDataFromDB = async (db, testData) => {
 };
 
 /**
- * utility function to test if the id
- * of the test student is in the response (array)
  *
- * @param {*} arr
- * @param {*} val
+ * @param {*} db
+ * @param {*} testData
  * @returns
  */
-const isInArray = (arr, val) => {
-  let value = false;
-  arr.map((x) => {
-    if (String(x._id) === String(val)) {
-      value = true;
-    }
-  });
-  return value;
+const getDataFromDB = async (db) => {
+  try {
+    const result = await db.collection('Users').find({}).toArray();
+    return result
+  } catch (err) {
+    console.log('error', err.message);
+  }
 };
 
 // export the functions
 module.exports = {
-  testUser,
+  getDataFromDB,
   insertTestDataToDB,
-  deleteTestDataFromDB,
-  isInArray,
+  deleteTestDataFromDB,  
 };
