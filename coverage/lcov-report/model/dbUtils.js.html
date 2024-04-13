@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">41.17% </span>
+                <span class="strong">88.23% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/17</span>
+                <span class='fraction'>15/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">41.17% </span>
+                <span class="strong">88.23% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/17</span>
+                <span class='fraction'>15/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -130,12 +130,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -146,10 +146,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -179,14 +179,14 @@ let database;
 &nbsp;
 &nbsp;
 // connection to the db
-const connect = <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {
+const connect = async () =&gt; {
   // always use try/catch to handle any exception
-<span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    client = new MongoClient(dbURL);</span>
-<span class="cstat-no" title="statement not covered" >    database = client.db('PennLFG');</span>
+  try {
+    client = new MongoClient(dbURL);
+    database = client.db('PennLFG');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    console.log('connected to db: PennLFG');</span>
-<span class="cstat-no" title="statement not covered" >    return client; </span>// we return the entire client, not just the DB
+    console.log('connected to db: PennLFG');
+    return client; // we return the entire client, not just the DB
   } catch (err) {
 <span class="cstat-no" title="statement not covered" >    console.log(err.message);</span>
   }
@@ -195,12 +195,12 @@ const connect = <span class="fstat-no" title="function not covered" >as</span>yn
  *
  * @returns the database attached to this MongoDB connection
  */
-const getDB = <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {
+const getDB = async () =&gt; {
   // test if there is an active connection
-<span class="cstat-no" title="statement not covered" >  if (!client) {</span>
-<span class="cstat-no" title="statement not covered" >    await connect();</span>
+  if (!client) {
+    await connect();
   }
-<span class="cstat-no" title="statement not covered" >  return database;</span>
+  return database;
 };
 &nbsp;
 /**
@@ -223,7 +223,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-04-13T21:32:14.927Z
+                at 2024-04-13T21:58:23.707Z
             </div>
         <script src="../prettify.js"></script>
         <script>

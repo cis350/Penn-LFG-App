@@ -23,8 +23,9 @@ const insertTestDataToDB = async (db, testData) => {
  */
 const deleteTestDataFromDB = async (db, testData) => {
   try {
-    const result = await db.collection('Users').deleteMany({ name: testData });
+    const result = await db.collection('Users').deleteMany({ username: testData });
     const { deletedCount } = result;
+
     if (deletedCount === 1) {
       console.log('info', 'Successfully deleted test student');
     } else {

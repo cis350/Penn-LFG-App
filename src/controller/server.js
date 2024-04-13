@@ -10,11 +10,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// test welcome endpoint
-app.get('/', async (req, res) => {
-  return res.json({ message: 'Welcome to PennLFG'});
-});
-
 // REGISTER ENDPOINT
 app.post('/register', async (req, res) => {
 

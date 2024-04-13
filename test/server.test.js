@@ -1,53 +1,100 @@
 const request = require('supertest');
-const { app } = require('../src/controller/server');
 const jwt = require('jsonwebtoken');
+const app = require('../src/controller/server');
+const { deleteTestDataFromDB } = require('./testUtils')
+const { closeMongoDBConnection, getDB } =  require('../src/model/dbUtils');
 
-const secretKey = 'c1edf6d2f856bd9db8eba0be38f907055319d63625c0d4c068389de3232e1473'; // Use the same secret key as in your app
 
-describe('User Authentication Endpoints', () => {
-  describe('POST /register', () => {
-    it('should register a new user and return a token', async () => {
-      const newUser = {
-        username: 'newUser2',
-        password: 'password123',
-        fname: "Test",
-        lname: "Test"
-      };
+describe("API endpoint testing", () => {
 
-      const response = await request(app).post('/register').send(newUser);
-      expect(response.statusCode).toBe(201);
-      expect(response.body.message).toBe('User registered successfully');
+  let db;
+  let testUser = {
+      username: "testuser",
+      password: "testpassword",
+      fname: "Test",
+      lname: "User"
+  };
 
-      // Verify that a token is returned
+  beforeAll(async () => {
+    db = await getDB(); // Get the database connection before all tests
+  });
+
+  afterAll(async () => {
+    // Clean up the database
+    await deleteTestDataFromDB(db, testUser.username);
+    await closeMongoDBConnection; 
+  });
+
+  describe("POST /register", () => {
+    it("should register a user and return a JWT", async () => {
+      const response = await request(app)
+        .post('/register')
+        .send(testUser)
+        .expect(201)
+        .expect('Content-Type', /json/);
+
       expect(response.body).toHaveProperty('token');
-      const decodedToken = jwt.verify(response.body.token, secretKey);
-      expect(decodedToken).toHaveProperty('username', newUser.username);
+      const decoded = jwt.verify(response.body.token, process.env.KEY);
+      expect(decoded).toHaveProperty('username', testUser.username);
+    });
 
-      if (response.statusCode !== 201) {
-        console.error('Error response:', response.body); // Print the entire error response
-      }
+    it("should fail with 400 if username or password is missing", async () => {
+      const response = await request(app)
+        .post('/register')
+        .send({ fname: "Test", lname: "User" })
+        .expect(400);
+    });
+
+    it("should fail with 409 if username already exists", async () => {
+      // Assuming the user from the first test already exists
+      const response = await request(app)
+        .post('/register')
+        .send(testUser)
+        .expect(409);
     });
   });
 
-  describe('POST /login', () => {
-    it('should login a user and return a token', async () => {
-      const userCredentials = {
-        username: 'newUser1', // Ensure this user is already registered in your database
-        password: 'password123'
-      };
+  describe("POST /login", () => {
+    it("should log in a user and return a JWT", async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({
+            username: testUser.username,
+            password: testUser.password
+        })
+        .expect(200)
+        .expect('Content-Type', /json/);
 
-      const response = await request(app).post('/login').send(userCredentials);
-      expect(response.statusCode).toBe(200);
-      expect(response.body.message).toBe('User logged in successfully');
-
-      // Verify that a token is returned
       expect(response.body).toHaveProperty('token');
-      const decodedToken = jwt.verify(response.body.token, secretKey);
-      expect(decodedToken).toHaveProperty('username', userCredentials.username);
+      const decoded = jwt.verify(response.body.token, process.env.KEY);
+      expect(decoded).toHaveProperty('username', testUser.username);
+    });
 
-      if (response.statusCode !== 200) {
-        console.error('Error response:', response.body); // Print the entire error response
-      }
+    it("should fail with 400 if username or password is missing", async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({})
+        .expect(400);
+    });
+
+    it("should fail with 409 if username does not exist", async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({
+            username: "nonexistentuser",
+            password: "password"
+        })
+        .expect(409);
+    });
+
+    it("should fail with 401 if password is incorrect", async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({
+            username: testUser.username,
+            password: "wrongpassword"
+        })
+        .expect(401);
     });
   });
 });
