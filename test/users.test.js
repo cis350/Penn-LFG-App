@@ -7,7 +7,7 @@ const newUser = {
   username: 'drake',
   password: 'jcole',
   fname: 'Adam',
-  lname: 'Nomani'
+  lname: 'Nomani',
 };
 
 // TEST POST ENDPOINT
