@@ -44,7 +44,7 @@ describe("API endpoint testing", () => {
         .expect(400);
     });
 
-    it("should fail with 409 if username already exists", async () => {
+    it("should fail with 401 if username already exists", async () => {
       // Assuming the user from the first test already exists
       const response = await request(app)
         .post('/register')

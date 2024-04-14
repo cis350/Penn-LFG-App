@@ -17,8 +17,8 @@ app.post('/register', async (req, res) => {
   const { username, password, fname, lname } = req.body;
 
   // check if username and password were inputted
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password are required' });
+  if (!username || !password || !fname || !lname) {
+    return res.status(400).json({ error: 'Username, password, first name, and last name are required' });
   }
 
   // query the database to see if the username already exists
