@@ -21,7 +21,7 @@ describe("API endpoint testing", () => {
   afterAll(async () => {
     // Clean up the database
     await deleteTestDataFromDB(db, testUser.username);
-    await closeMongoDBConnection; 
+    await closeMongoDBConnection(); 
   });
 
   describe("POST /register", () => {
