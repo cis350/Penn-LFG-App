@@ -4,7 +4,6 @@ const app = require('../src/controller/server');
 const { deleteTestDataFromDB } = require('./testUtils')
 const { closeMongoDBConnection, getDB } =  require('../src/model/dbUtils');
 
-
 describe("API endpoint testing", () => {
 
   let db;
