@@ -7,22 +7,19 @@ const { MongoClient } = require('mongodb');
 const dbURL = process.env.DB_URL;
 
 // MongoDB database connection
-let MongoConnection;
+let client;
+let database;
 
-/**
- * SRP: connects to MongoDB and return the connection handle
- */
 
 // connection to the db
 const connect = async () => {
   // always use try/catch to handle any exception
   try {
-    MongoConnection = (await MongoClient.connect(
-      dbURL,
-    )); // we return the entire connection, not just the DB
-    // check that we are connected to the db
-    console.log(`connected to db: ${MongoConnection.db().databaseName}`);
-    return MongoConnection;
+    client = new MongoClient(dbURL);
+    database = client.db('PennLFG');
+
+    console.log('connected to db: PennLFG');
+    return client; // we return the entire client, not just the DB
   } catch (err) {
     console.log(err.message);
   }
@@ -33,10 +30,10 @@ const connect = async () => {
  */
 const getDB = async () => {
   // test if there is an active connection
-  if (!MongoConnection) {
+  if (!client) {
     await connect();
   }
-  return MongoConnection.db();
+  return database;
 };
 
 /**
@@ -44,7 +41,7 @@ const getDB = async () => {
  * Close the mongodb connection
  */
 const closeMongoDBConnection = async () => {
-  await MongoConnection.close();
+  await client.close();
 };
 
 // export the functions
