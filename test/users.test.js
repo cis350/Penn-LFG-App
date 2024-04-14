@@ -36,8 +36,8 @@ describe('GET users(s) endpoint integration test', () => {
         }
     });
 
-    test('Register and delete user', async () => {
-        const response = await request(app)
+  test('Register and delete user', async () => {
+    const response = await request(app)
         .post('/register')
         .send(newUser);
 

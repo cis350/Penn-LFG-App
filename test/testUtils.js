@@ -7,6 +7,7 @@ const testUser = {
   fname: 'Adam',
   lname: 'Nomani'
 };
+
 /**
  * Adds a test student to the DB
  * @param {*} testData - the test data
@@ -40,8 +41,7 @@ const deleteTestDataFromDB = async (db, testData) => {
 /**
  *
  * @param {*} db
- * @param {*} testData
- * @returns
+ * @returns results from the database
  */
 const getDataFromDB = async (db) => {
   try {
