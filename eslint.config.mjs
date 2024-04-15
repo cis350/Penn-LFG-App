@@ -1,5 +1,4 @@
 import globals from "globals";
-
 import path from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
@@ -12,6 +11,12 @@ const compat = new FlatCompat({baseDirectory: __dirname, recommendedConfig: plug
 
 export default [
   {files: ["**/*.js"], languageOptions: {sourceType: "commonjs"}},
-  {languageOptions: { globals: globals.browser }},
-  ...compat.extends("airbnb-base"),
+  {languageOptions: { 
+    globals: { 
+      ...globals.browser, 
+      ...globals.jest 
+    }
+  }},
+  ...compat.extends("airbnb-base").map(config => ({ ...config })),
+  {rules: { 'no-console': 'off'}}
 ];
