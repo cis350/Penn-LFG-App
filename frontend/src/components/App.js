@@ -1,25 +1,19 @@
-import logo from '../logo.svg';
-import './css/App.css';
+import React from 'react';
+import Header from './Header';
 
 function App() {
+  // State that keeps track of whether the user is logged in
+  // Replace this with your actual logic to determine logged-in status
+  const isLoggedIn = false;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header isLoggedIn={isLoggedIn} />
+      {/* Rest of your application components */}
     </div>
   );
 }
 
 export default App;
+
+// FOR ALAIN: implement navbar and buttons for the home page, then make the homepage component, then continue onto the login and registration pages
