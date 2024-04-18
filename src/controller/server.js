@@ -4,8 +4,8 @@ const cors = require('cors');
 const users = require('../model/users');
 const jwtAuth = require('./controllerUtils/jwtAuth');
 const jwt = require('jsonwebtoken');
-const dbUtils = require('../model/dbUtils')
 const app = express();
+const addPost = require('../model/userPost')
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
@@ -116,22 +116,7 @@ app.post('/post', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    //Create a new post
-    const db = await dbUtils.getDB();
-    const postsCollection = db.collection('Post');
-    const newPost = {
-      title: title,
-      description: description,
-      owner: username,
-      course: course,
-      createdAt: new Date(),
-      lookingFor: lookingFor,
-      modeOfCollab: modeOfCollab,
-      tags: tags
-    };
-
-    const result = await postsCollection.insertOne(newPost);
-
+    const result = await addPost(username, title, description, course, lookingFor, modeOfCollab, tags)
     res.status(201).json({ message: 'Post created successfully', postId: result.insertedId });
   } catch (error) {
     console.log('Error creating post:', error);
