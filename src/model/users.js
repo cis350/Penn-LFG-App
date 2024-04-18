@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const { closeMongoDBConnection, getDB } = require('./dbUtils');
+const { getDB } = require('./dbUtils');
 
 let database;
 let collection;
@@ -12,9 +12,9 @@ const setUpCollection = async () => {
     database = await getDB();
     collection = await database.collection('Users');
   } catch (err) {
-    console.log(`error: ${err.message}`)
+    console.log(`error: ${err.message}`);
   }
-}
+};
 
 /**
  * Adds a new user to the database.
@@ -22,14 +22,15 @@ const setUpCollection = async () => {
  * @returns {Promise<string>} The newly created user's ID.
  */
 const addUser = async (newUser) => {
+  let result;
   try {
     await setUpCollection();
-    const result = await collection.insertOne(newUser);
+    result = await collection.insertOne(newUser);
     console.log(`New user created with id: ${result.insertedId}`);
-    return result.insertedId;
   } catch (err) {
     console.log(`addUser error: ${err.message}`);
   }
+  return result.insertedId;
 };
 
 /**
@@ -37,12 +38,13 @@ const addUser = async (newUser) => {
  * @returns {Promise<Array>} A promise that resolves to an array of users.
  */
 const getAllUsers = async () => {
+  let result;
   try {
-    const result = await collection.find({}).toArray();
-    return result;
+    result = await collection.find({}).toArray();
   } catch (err) {
     console.log(`error: ${err.message}`);
   }
+  return result;
 };
 
 /**
@@ -51,13 +53,14 @@ const getAllUsers = async () => {
  * @returns {Promise<Object>} A promise that resolves to the user object if found.
  */
 const getUserByUName = async (username) => {
+  let result;
   try {
     await setUpCollection();
-    const result = await collection.findOne({ username });
-    return result;
+    result = await collection.findOne({ username });
   } catch (err) {
     console.log(`error: ${err.message}`);
   }
+  return result;
 };
 
 /**
@@ -67,15 +70,16 @@ const getUserByUName = async (username) => {
  * @returns {Promise<Object>} A promise that resolves to the update operation result.
  */
 const updateUser = async (userID, newUName) => {
+  let result;
   try {
-    const result = await collection.updateOne(
+    result = await collection.updateOne(
       { _id: ObjectId(userID) },
       { $set: { username: newUName } },
     );
-    return result;
   } catch (err) {
     console.log(`updateUser error: ${err.message}`);
   }
+  return result;
 };
 
 /**
@@ -84,12 +88,13 @@ const updateUser = async (userID, newUName) => {
  * @returns {Promise<Object>} A promise that resolves to the delete operation result.
  */
 const deleteUser = async (userID) => {
+  let result;
   try {
-    const result = await collection.deleteOne({ _id: ObjectId(userID) });
-    return result;
+    result = await collection.deleteOne({ _id: ObjectId(userID) });
   } catch (err) {
     console.log(`deleteUser error: ${err.message}`);
   }
+  return result;
 };
 
 // export the functions

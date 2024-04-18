@@ -16,14 +16,9 @@ const jwtBlacklist = new Set();
  * @returns the token
  */
 const authenticateUser = (username) => {
-  try {
-    const token = jwt.sign({ username }, process.env.KEY, { expiresIn: '20000s' });
-    console.log('token', token);
-    return token;
-  } catch (err) {
-    console.log('error', err.message);
-    throw err;
-  }
+  const token = jwt.sign({ username }, process.env.KEY, { expiresIn: '120s' });
+  // console.log('token', token);
+  return token;
 };
 
 /**
@@ -40,7 +35,7 @@ const verifyUser = async (token) => {
 
     // decoded contains the paylod of the token
     const decoded = jwt.verify(token, process.env.KEY);
-    console.log('payload', decoded);
+    // console.log('payload', decoded);
     // check that the payload contains a valid user
     const user = await getUserByUName(decoded.username);
     if (!user) {
@@ -51,11 +46,11 @@ const verifyUser = async (token) => {
   } catch (err) {
     // expired token
     if (err.name === 'TokenExpiredError') {
-      console.log('error', err.message);
+      // console.log('error', err.message);
       return 1;
     }
     // invalid token
-    console.log('error', err.message);
+    // console.log('error', err.message);
     return 3;
   }
 };

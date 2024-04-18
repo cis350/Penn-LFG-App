@@ -10,19 +10,17 @@ const dbURL = process.env.DB_URL;
 let client;
 let database;
 
-
 // connection to the db
 const connect = async () => {
   // always use try/catch to handle any exception
   try {
     client = new MongoClient(dbURL);
     database = client.db('PennLFG');
-
     console.log('connected to db: PennLFG');
-    return client; // we return the entire client, not just the DB
   } catch (err) {
     console.log(err.message);
   }
+  return client; // we return the entire client, not just the DB
 };
 /**
  *
