@@ -15,6 +15,12 @@ export default [
   {files: ["**/*.js"], languageOptions: {sourceType: "commonjs"}},
   {languageOptions: { globals: globals.browser }},
   ...compat.extends("airbnb"),
-  {rules: { 'no-console': 'off'}, },
-  {settings: {'import/ignore': ['react-native']}, }
+  {rules: {
+    'no-console': 'off',
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+  }, },
+  {settings: {
+    'import/ignore': ['react-native'], 
+    "import/parsers": {espree: [".js", ".cjs", ".mjs", ".jsx"], }, 
+    }, },
 ];

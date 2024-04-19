@@ -2,7 +2,7 @@
  * Utilities functions used by API calls
  * functions
  */
-import axios from 'axios';
+import { axios } from 'axios';
 /**
  * Adds the JWT to the header of an HTTP request
  */

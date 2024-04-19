@@ -1,6 +1,6 @@
 // FROM STARTER CODE, UNCHANGED
 // HTTP client
-import axios from 'axios';
+import { axios } from 'axios';
 import { rootURL, setHeaders } from '../utils/apiUtils';
 /**
  * This module contains HTTP calls to

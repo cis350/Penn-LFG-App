@@ -1,5 +1,5 @@
-import React from 'react';
-import Header from './Header';
+import { React } from 'react';
+import { Header } from './Header';
 
 function App() {
   // State that keeps track of whether the user is logged in
@@ -15,5 +15,4 @@ function App() {
 }
 
 export default App;
-
 // FOR ALAIN: implement navbar and buttons for the home page, then make the homepage component, then continue onto the login and registration pages

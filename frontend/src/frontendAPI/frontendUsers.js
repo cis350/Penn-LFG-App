@@ -1,6 +1,6 @@
 // TAKEN STRAIGHT FROM STARTER CODE, NOT EDITED
 // HTTP client
-import axios from 'axios';
+import { axios } from 'axios';
 import { rootURL, setHeaders } from '../utils/apiUtils';
 
 /**
