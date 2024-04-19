@@ -1,5 +1,6 @@
-import { React } from 'react';
-import { Header } from './Header';
+import React from 'react';
+import Header from './Header';
+import './css/App.css';
 
 function App() {
   // State that keeps track of whether the user is logged in
