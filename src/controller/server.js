@@ -108,7 +108,7 @@ app.post('/post', async (req, res) => {
     //Decode the token to get the username
     const decoded = jwt.verify(token, process.env.KEY);
     const username = decoded.username;
-    console.log("HEllo", username)
+    console.log("Hello", username)
     // Get user's data from username
     const user = await users.getUserByUName(username);
     if (!user) {
