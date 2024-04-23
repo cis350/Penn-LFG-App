@@ -1,5 +1,3 @@
-// FROM STARTER CODE, UNCHANGED
-// HTTP client
 import axios from 'axios';
 import { rootURL, setHeaders } from '../utils/apiUtils';
 /**
@@ -9,7 +7,7 @@ import { rootURL, setHeaders } from '../utils/apiUtils';
 
 /**
  * This function authenticates the user
- * sends a POSt request to the login endpoint
+ * sends a POST request to the login endpoint
  * returns the JWT
  */
 export const loginUser = async (username, password) => {
@@ -17,23 +15,49 @@ export const loginUser = async (username, password) => {
   try {
     // add JWT to headers
     setHeaders();
-    response = await axios.post(`${rootURL}/login`, `username=${username}&password=${password}`);
+    response = await axios.post(`${rootURL}/login`, { username, password });
     // return the token
   } catch (err) {
     console.log('error', err.message);
   }
-  return response.data.apptoken;
+
+  // if the database if offline, pass that error up to the frontend
+  if (!response) {
+    return null;
+  }
+
+  return response.data.token;
 };
 
-export const logoutUser = async () => {
+export const registerUser = async (username, password, fname, lname) => {
   let response;
   try {
     // add JWT to headers
     setHeaders();
-    response = await axios.post(`${rootURL}/logout`);
-    // return the token
+    response = await axios.post(`${rootURL}/register`, {
+      username, password, fname, lname,
+    });
   } catch (err) {
     console.log('error', err.message);
   }
-  return response.status;
+
+  // if the database if offline, pass that error up to the frontend
+  if (!response) {
+    return null;
+  }
+
+  return response.data.token;
 };
+
+// export const logoutUser = async () => {
+//   let response;
+//   try {
+//     // add JWT to headers
+//     setHeaders();
+//     response = await axios.post(`${rootURL}/logout`);
+//     // return the token
+//   } catch (err) {
+//     console.log('error', err.message);
+//   }
+//   return response.status;
+// };
