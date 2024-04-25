@@ -13,5 +13,3 @@ function App() {
 }
 
 export default App;
-
-// MAKE LANDING PAGE (BLANK FOR NOW), THEN MODIFY frontendAPI and utils files and use that functionality in app.js, navbar, other necessary files, maybe using useState reference the example code

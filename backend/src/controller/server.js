@@ -1,11 +1,12 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const users = require('../model/users');
 const jwtAuth = require('./controllerUtils/jwtAuth');
-const jwt = require('jsonwebtoken');
+const addPost = require('../model/posts');
+
 const app = express();
-const addPost = require('../model/userPost')
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
@@ -90,37 +91,69 @@ app.post('/login', async (req, res) => {
   return res.status(200).json({ message: 'User logged in successfully', token });
 });
 
+// AUTH ENDPOINT - Check if a user has a valid JWT token
+app.post('/verify', async (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+  let verifyStatus;
+  try {
+    verifyStatus = await jwtAuth.verifyUser(token);
+  } catch (err) {
+    console.log('Error verifying user:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+  if (verifyStatus !== 0) {
+    return res.status(401).json({ error: 'Invalid or expired token' });
+  }
+
+  return res.status(200).json({ message: 'User verified successfully' });
+});
+
 // POST ENDPOINT - Create a Post
 app.post('/post', async (req, res) => {
-  const { token, title, description, course, lookingFor, modeOfCollab, tags } = req.body;
+  const {
+    token,
+    title,
+    description,
+    course,
+    lookingFor,
+    modeOfCollab,
+    tags,
+  } = req.body;
 
-  if (!token || !title || !description || !course || lookingFor === undefined || !modeOfCollab || !tags) {
+  if (!token || !title || !description || !course
+    || lookingFor === undefined || !modeOfCollab || !tags) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
+  let result;
   try {
-    //Verify user by token
+    // Verify user by token
     const verifyStatus = await jwtAuth.verifyUser(token);
     if (verifyStatus !== 0) {
       return res.status(401).json({ error: 'Invalid or expired token' });
     }
-  
-    //Decode the token to get the username
+
+    // Decode the token to get the username
     const decoded = jwt.verify(token, process.env.KEY);
-    const username = decoded.username;
-    console.log("Hello", username)
+    const { username } = decoded;
+    console.log('Hello', username);
+
     // Get user's data from username
     const user = await users.getUserByUName(username);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const result = await addPost(username, title, description, course, lookingFor, modeOfCollab, tags)
-    res.status(201).json({ message: 'Post created successfully', postId: result.insertedId });
+    result = await addPost(username, title, description, course, lookingFor, modeOfCollab, tags);
   } catch (error) {
     console.log('Error creating post:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
+
+  return res.status(201).json({ message: 'Post created successfully', postId: result.insertedId });
 });
 
 module.exports = app;

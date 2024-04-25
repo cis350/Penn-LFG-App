@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const { getDB } = require('./dbUtils');
+const dbUtils = require('./dbUtils');
 
 let database;
 let collection;
@@ -9,7 +9,7 @@ let collection;
  */
 const setUpCollection = async () => {
   try {
-    database = await getDB();
+    database = await dbUtils.getDB();
     collection = await database.collection('Users');
   } catch (err) {
     console.log(`error: ${err.message}`);

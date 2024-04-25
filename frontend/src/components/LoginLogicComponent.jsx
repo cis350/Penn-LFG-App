@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate, Routes, Route } from 'react-router-dom';
 import { loginUser, registerUser } from '../frontendAPI/frontendAuth';
 import Header from './Header';
@@ -10,7 +10,7 @@ import HomePage from './HomePage';
 
 /**
  * The login/logout component is stateful
- * The login state is the variable `loginToken`
+ * The login state is the variable `isLoggedIn`
  * Session: the JWT is stored in localstorage
  * If there is a token in local storage then we assume
  * that the user is loggged in.
@@ -24,15 +24,26 @@ import HomePage from './HomePage';
  * The state is initialized 
  * @returns This stateful component 
  */
+
+// ALAIN: understand sessionStorage, localStorage, which one you should use, make sure setIsLoggedIn is working, then create logout backend, then frontend, 
+// then refactor react code, then style check, then do cypress e2e testing
 function Login() {
     // add a state to the component
     // update the login state to check for the presence 
     // of the JWT
-    const [loginToken, setLoginToken] = useState(sessionStorage.getItem('app-token') !== null);
+    const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('app-token') !== null); // default set to false, meaning that every time the page is closed, the user will have to login again
     let username; // will store the username. this value is destroyed after each rendering
     let password; // will store the password
     let fname;
     let lname;
+
+    useEffect(() => {
+      const token = localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken');
+      if (token) {
+        console.log()
+        setIsLoggedIn(true);
+      }
+    }, []);
 
     // login button click event handler.
     /**
@@ -42,12 +53,13 @@ function Login() {
     const handleLogin = async (e) => {
       // authenticate the user, the token is returned if success
       const token = await loginUser(username, password);
-      if(token){  // check that the token is not undefined
+      if (token) {  // check that the token is not undefined
         // store the token
         localStorage.setItem('app-token', token);
         // update the login state
-        setLoginToken(true);
-        console.log('login', token);
+        setIsLoggedIn(true);
+        // console.log('login', token);
+        console.log("isLoggedIn", isLoggedIn);
       } else {
         console.log('Error', 'authentication failure');
         alert('500: Internal Sever Error');
@@ -61,7 +73,7 @@ function Login() {
           // store the token
           localStorage.setItem('app-token', token);
           // update the login state
-          setLoginToken(true);
+          setIsLoggedIn(true);
           console.log('login', token);
         } else {
           console.log('Error', 'registration or authentication failure');
@@ -94,7 +106,7 @@ function Login() {
     };
     
     // conditional rendering based on the state
-    if (loginToken === false) {
+    if (isLoggedIn === false) {
       return (
         <>
           <Header isLoggedIn={false} /><Routes>
