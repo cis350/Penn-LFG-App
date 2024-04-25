@@ -32,8 +32,6 @@ export const loginUser = async (username, password) => {
 export const registerUser = async (username, password, fname, lname) => {
   let response;
   try {
-    // add JWT to headers
-    setHeaders();
     response = await axios.post(`${rootURL}/register`, {
       username, password, fname, lname,
     });
@@ -48,6 +46,10 @@ export const registerUser = async (username, password, fname, lname) => {
 
   return response.data.token;
 };
+
+export const verifyUser = async () => {
+  let response
+}
 
 // export const logoutUser = async () => {
 //   let response;

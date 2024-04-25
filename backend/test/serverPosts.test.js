@@ -17,7 +17,7 @@ describe('POST /post endpoint testing', () => {
     db = await getDB();
     // Setup a user and get a valid token
     await request(app).post('/register').send(userData);
-    const loginResponse = await request(app).post('/login').send({username: userData.username, password: userData.password});
+    const loginResponse = await request(app).post('/login').send({ username: userData.username, password: userData.password });
     token = loginResponse.body.token;
   });
 
@@ -34,7 +34,7 @@ describe('POST /post endpoint testing', () => {
         course: 'Test Course',
         lookingFor: 'partners',
         modeOfCollab: 'online',
-        tags: ['tag1', 'tag2']
+        tags: ['tag1', 'tag2'],
       };
 
       const response = await request(app)
@@ -53,7 +53,7 @@ describe('POST /post endpoint testing', () => {
         title: 'Test Title',
         description: 'Test Description',
         course: 'Test Course',
-        //lookingFor, modeOfCollab, and tags are intentionally missing
+        // lookingFor, modeOfCollab, and tags are intentionally missing
       };
 
       await request(app)
@@ -70,7 +70,7 @@ describe('POST /post endpoint testing', () => {
         course: 'Test Course',
         lookingFor: 'partners',
         modeOfCollab: 'online',
-        tags: ['tag1', 'tag2']
+        tags: ['tag1', 'tag2'],
       };
 
       await request(app)
@@ -88,7 +88,7 @@ describe('POST /post endpoint testing', () => {
         course: 'Test Course',
         lookingFor: 'partners',
         modeOfCollab: 'online',
-        tags: ['tag1', 'tag2']
+        tags: ['tag1', 'tag2'],
       };
 
       await request(app)
@@ -97,5 +97,4 @@ describe('POST /post endpoint testing', () => {
         .expect(404);
     });
   });
-
 });
