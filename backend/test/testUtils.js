@@ -41,6 +41,25 @@ const deleteTestUserFromDB = async (db, testUser) => {
   return false;
 };
 
+const deleteTestPostFromDB = async (db, testPostId) => {
+  try {
+    const result = await db.collection('Post').deleteMany({ _id: testPostId });
+    const { deletedCount } = result;
+    if (deletedCount === 1) {
+      console.log('info', 'Successfully deleted test post');
+      return true;
+    } else if (deletedCount === 0) {
+      console.log('warning', 'Test post was not found or already deleted');
+    } else {
+      console.log('warning', `Unexpected number of posts deleted: ${deletedCount}`);
+    }
+  } catch (err) {
+    console.log('error', err.message);
+    return err; // Ensure return in catch block
+  }
+  return false;
+};
+
 /**
  *
  * @param {*} db
@@ -61,4 +80,5 @@ module.exports = {
   getDataFromDB,
   insertTestUserToDB,
   deleteTestUserFromDB,
+  deleteTestPostFromDB,
 };

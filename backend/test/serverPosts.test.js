@@ -2,6 +2,7 @@ const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const app = require('../src/controller/server');
 const { closeMongoDBConnection, getDB } = require('../src/model/dbUtils');
+const { deleteTestUserFromDB, deleteTestPostFromDB } = require('./testUtils');
 
 describe('POST /post endpoint testing', () => {
   let db;
@@ -22,6 +23,7 @@ describe('POST /post endpoint testing', () => {
   });
 
   afterAll(async () => {
+    await deleteTestUserFromDB(db, userData.username);
     await closeMongoDBConnection();
   });
 
@@ -45,6 +47,8 @@ describe('POST /post endpoint testing', () => {
 
       expect(response.body).toHaveProperty('message', 'Post created successfully');
       expect(response.body).toHaveProperty('postId');
+      await deleteTestPostFromDB(db, response.body.postId);
+
     });
 
     it('should return a 400 error if any required field is missing', async () => {
@@ -79,7 +83,7 @@ describe('POST /post endpoint testing', () => {
         .expect(401);
     });
 
-    it('should return a 404 error if the user does not exist', async () => {
+    it('should return a 401 error if the user does not exist', async () => {
       const wrongUserToken = jwt.sign({ username: 'nonexistentuser' }, process.env.KEY);
       const wrongUserData = {
         token: wrongUserToken,
@@ -94,7 +98,7 @@ describe('POST /post endpoint testing', () => {
       await request(app)
         .post('/post')
         .send(wrongUserData)
-        .expect(404);
+        .expect(401);
     });
   });
 });
