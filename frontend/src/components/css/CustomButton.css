@@ -1,0 +1,31 @@
+.custom-button {
+    padding: 10px 20px; /* Base padding */
+    border: none;
+    color: white;
+    background-color: black;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 4px; /* Slightly rounded corners for all buttons */
+    transition: background-color 0.3s; /* Smooth background color transition */
+  }
+  
+  .custom-button:hover {
+    background-color: #333; /* Slightly lighter black on hover */
+  }
+  
+  /* Large button variant */
+  .custom-button.large {
+    min-width: 300px;
+    padding: 16px 0; /* Larger padding */
+    border-radius: 10px; /* More pronounced rounded corners */
+  }
+  
+  /* Small button variant */
+  .custom-button.small {
+    padding: 8px 16px; /* Smaller padding */
+    border-radius: 4px; /* Standard rounded corners */
+  }
+  
