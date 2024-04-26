@@ -93,4 +93,64 @@ describe('API endpoint testing', () => {
         .expect(401);
     });
   });
+
+  describe('POST /logout, /verify', () => {
+    let validToken;
+  
+    beforeAll(async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({ username: testUser.username, password: testUser.password });
+      validToken = response.body.token;
+    });
+  
+    describe('/verify endpoint', () => {
+      it('should reject unauthorized request', async () => {
+        const res = await request(app)
+          .post('/verify')
+          .send();
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toHaveProperty('error');
+      });
+  
+      it('should reject request with expired or invalid token', async () => {
+        const res = await request(app)
+          .post('/verify')
+          .set('Authorization', 'Bearer expired_or_invalid_token');
+        expect(res.statusCode).toEqual(401);
+      });
+  
+      it('should verify user with valid token', async () => {
+        const res = await request(app)
+          .post('/verify')
+          .set('Authorization', validToken);
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('message', 'User verified successfully');
+      });
+    });
+  
+    describe('/logout endpoint', () => {
+      it('should reject logout with no token', async () => {
+        const res = await request(app)
+          .post('/logout')
+          .send();
+        expect(res.statusCode).toEqual(400);
+      });
+  
+      it('should reject logout with expired or invalid token', async () => {
+        const res = await request(app)
+          .post('/logout')
+          .set('Authorization', 'Bearer expired_or_invalid_token');
+        expect(res.statusCode).toEqual(401);
+      });
+  
+      it('should successfully terminate session with valid token', async () => {
+        const res = await request(app)
+          .post('/logout')
+          .set('Authorization', validToken);
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('message', 'Session terminated');
+      });
+    });
+  });
 });

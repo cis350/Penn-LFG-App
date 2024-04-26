@@ -13,8 +13,6 @@ import { rootURL, setHeaders } from '../utils/apiUtils';
 export const loginUser = async (username, password) => {
   let response;
   try {
-    // add JWT to headers
-    setHeaders();
     response = await axios.post(`${rootURL}/login`, { username, password });
     // return the token
   } catch (err) {
@@ -47,19 +45,19 @@ export const registerUser = async (username, password, fname, lname) => {
   return response.data.token;
 };
 
-export const verifyUser = async () => {
-  let response
-}
+// export const verifyUser = async () => {
+//   let response
+// }
 
-// export const logoutUser = async () => {
-//   let response;
-//   try {
-//     // add JWT to headers
-//     setHeaders();
-//     response = await axios.post(`${rootURL}/logout`);
-//     // return the token
-//   } catch (err) {
-//     console.log('error', err.message);
-//   }
-//   return response.status;
-// };
+export const logoutUser = async () => {
+  let response;
+  try {
+    // add JWT to headers
+    setHeaders();
+    response = await axios.post(`${rootURL}/logout`);
+    // return the token
+  } catch (err) {
+    console.log('error', err.message);
+  }
+  return response.status;
+};

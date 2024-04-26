@@ -93,14 +93,14 @@ app.post('/login', async (req, res) => {
 
 // AUTH ENDPOINT - Check if a user has a valid JWT token
 app.post('/verify', async (req, res) => {
-  const { token } = req.body;
+  const token  = req.headers.authorization;
   if (!token) {
     return res.status(400).json({ error: 'All fields are required' });
   }
   let verifyStatus;
   try {
     verifyStatus = await jwtAuth.verifyUser(token);
-  } catch (err) {
+  } catch (error) {
     console.log('Error verifying user:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
@@ -109,6 +109,31 @@ app.post('/verify', async (req, res) => {
   }
 
   return res.status(200).json({ message: 'User verified successfully' });
+});
+
+// LOGOUT ENDPOINT
+app.post('/logout', async (req, res) => {
+  // verify the session
+  console.log('logout', req.headers.authorization);
+  const token  = req.headers.authorization;
+  if (!token) {
+    return res.status(400).json({ error: 'No valid session token present.' });
+  }
+  let verifyStatus;
+  try {
+    verifyStatus = await jwtAuth.verifyUser(token);
+    if (verifyStatus === 1) { // expired session
+      return res.status(403).json({ message: 'Session expired already' });
+    }
+    if (verifyStatus === 2 || verifyStatus === 3) { // invalid user or jwt
+      return res.status(401).json({ message: 'Invalid user or session' });
+    }
+    // session valid blacklist the JWT
+    jwtAuth.blacklistJWT(token);
+  } catch (err) {
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+  return res.status(200).json({ message: 'Session terminated' });
 });
 
 // POST ENDPOINT - Create a Post
