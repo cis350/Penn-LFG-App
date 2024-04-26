@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react';
 import { Navigate, Routes, Route } from 'react-router-dom';
-import { loginUser, registerUser, logoutUser, verifyUser } from '../frontendAPI/frontendAuth';
-import Header from './Header';
-import WelcomePage from './WelcomePage';
-import LoginPage from './LoginPage';
-import RegistrationPage from './RegistrationPage';
-import HomePage from './HomePage';
+import { loginUser, registerUser, logoutUser } from '../services/AuthApi';
+import Header from '../components/Header';
+import WelcomePage from '../pages/Welcome/WelcomePage';
+import LoginPage from '../pages/Login/LoginPage';
+import RegistrationPage from '../pages/Register/RegistrationPage';
+import HomePage from '../pages/Home/HomePage';
 
 /**
  * The login/logout component is stateful
@@ -25,7 +25,7 @@ import HomePage from './HomePage';
  * @returns This stateful component 
  */
 
-function Login() {
+function AuthContext() {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('app-token') !== null); // changed from sessionStorage to localStorage
   let username; 
   let password;
@@ -153,4 +153,4 @@ function Login() {
   }
 }
 
-export default Login;
+export default AuthContext;

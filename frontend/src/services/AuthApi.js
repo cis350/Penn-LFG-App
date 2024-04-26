@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { rootURL, setHeaders } from '../utils/apiUtils';
+import { rootURL, setHeaders } from '../utils/ApiUtils';
 /**
  * This module contains HTTP calls to
  * the /login and /logout endpoints

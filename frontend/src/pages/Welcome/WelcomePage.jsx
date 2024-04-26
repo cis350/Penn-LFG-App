@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './css/WelcomePage.css';
-import CustomButton from './CustomButton';
+import './WelcomePage.css';
+import CustomButton from '../../components/CustomButton';
 
 function WelcomePage() {
   return (

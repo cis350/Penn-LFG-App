@@ -1,6 +1,6 @@
 import React from 'react';
-import './css/LoginPage.css';
-import CustomButton from './CustomButton'; // Assuming you've created this button component
+import './LoginPage.css';
+import CustomButton from '../../components/CustomButton'; // Assuming you've created this button component
 
 function LoginPage({ onLogin, username, onUsernameChange, password, onPasswordChange }) {
 
