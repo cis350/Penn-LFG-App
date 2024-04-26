@@ -91,9 +91,9 @@ app.post('/login', async (req, res) => {
   return res.status(200).json({ message: 'User logged in successfully', token });
 });
 
-// AUTH ENDPOINT - Check if a user has a valid JWT token
+// VERIFY AUTHENTICATION ENDPOINT - Check if a user has a valid JWT token
 app.post('/verify', async (req, res) => {
-  const token  = req.headers.authorization;
+  const token = req.headers.authorization;
   if (!token) {
     return res.status(400).json({ error: 'All fields are required' });
   }
@@ -115,7 +115,7 @@ app.post('/verify', async (req, res) => {
 app.post('/logout', async (req, res) => {
   // verify the session
   console.log('logout', req.headers.authorization);
-  const token  = req.headers.authorization;
+  const token = req.headers.authorization;
   if (!token) {
     return res.status(400).json({ error: 'No valid session token present.' });
   }

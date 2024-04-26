@@ -16,14 +16,18 @@ export const loginUser = async (username, password) => {
     response = await axios.post(`${rootURL}/login`, { username, password });
     // return the token
   } catch (err) {
-    console.log('error', err.message);
+    console.log('error', err);
+    const errorJawn = {
+      message: err.response.data.error,
+      status: err.response.status,
+    };
+    // if there's no response attribute of the error, that means there was a
+    // CONNECTION REFUSED error trying to connect to the backend, so just return null
+    if (!errorJawn) {
+      return null;
+    }
+    return errorJawn;
   }
-
-  // if the database if offline, pass that error up to the frontend
-  if (!response) {
-    return null;
-  }
-
   return response.data.token;
 };
 
@@ -35,19 +39,41 @@ export const registerUser = async (username, password, fname, lname) => {
     });
   } catch (err) {
     console.log('error', err.message);
+    const errorJawn = {
+      message: err.response.data,
+      status: err.response.status,
+    };
+    // if there's no response attribute of the error, that means there was a
+    // CONNECTION REFUSED error trying to connect to the backend, so just return null
+    if (!errorJawn) {
+      return null;
+    }
+    return errorJawn;
   }
-
-  // if the database if offline, pass that error up to the frontend
-  if (!response) {
-    return null;
-  }
-
   return response.data.token;
 };
 
-// export const verifyUser = async () => {
-//   let response
-// }
+export const verifyUser = async () => {
+  let response;
+  try {
+    setHeaders();
+    response = await axios.post(`${rootURL}/verify`);
+  } catch (err) {
+    console.log('error', err.message);
+    const errorJawn = {
+      message: err.response.data,
+      status: err.response.status,
+    };
+    // if there's no response attribute of the error, that means there was a
+    // CONNECTION REFUSED error trying to connect to the backend, so just return null
+    if (!errorJawn) {
+      return null;
+    }
+    return errorJawn;
+  }
+
+  return response.status;
+};
 
 export const logoutUser = async () => {
   let response;
@@ -55,9 +81,9 @@ export const logoutUser = async () => {
     // add JWT to headers
     setHeaders();
     response = await axios.post(`${rootURL}/logout`);
-    // return the token
   } catch (err) {
     console.log('error', err.message);
   }
+  console.log(response.status);
   return response.status;
 };

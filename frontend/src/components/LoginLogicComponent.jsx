@@ -1,7 +1,7 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Navigate, Routes, Route } from 'react-router-dom';
-import { loginUser, registerUser } from '../frontendAPI/frontendAuth';
+import { loginUser, registerUser, logoutUser, verifyUser } from '../frontendAPI/frontendAuth';
 import Header from './Header';
 import WelcomePage from './WelcomePage';
 import LoginPage from './LoginPage';
@@ -25,128 +25,132 @@ import HomePage from './HomePage';
  * @returns This stateful component 
  */
 
-// ALAIN: understand sessionStorage, localStorage, which one you should use, make sure setIsLoggedIn is working, then create logout backend, then frontend, 
-// then refactor react code, then style check, then do cypress e2e testing
 function Login() {
-    // add a state to the component
-    // update the login state to check for the presence 
-    // of the JWT
-    const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('app-token') !== null); // default set to false, meaning that every time the page is closed, the user will have to login again
-    let username; // will store the username. this value is destroyed after each rendering
-    let password; // will store the password
-    let fname;
-    let lname;
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('app-token') !== null); // changed from sessionStorage to localStorage
+  let username; 
+  let password;
+  let fname;
+  let lname;
 
-    useEffect(() => {
-      const token = localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken');
-      if (token) {
-        console.log()
-        setIsLoggedIn(true);
-      }
-    }, []);
+  // login button click event handler.
+  /**
+   * State is usually mutated inside event handler
+   * @param {Event} e the click event dispatched by the login button
+   */
+  const handleLogin = async (e) => {
+    // authenticate the user, the token is returned if success
+    const token = await loginUser(username, password);
 
-    // login button click event handler.
-    /**
-     * State is usually mutated inside event handler
-     * @param {Event} e the click event dispatched by the login button
-     */
-    const handleLogin = async (e) => {
-      // authenticate the user, the token is returned if success
-      const token = await loginUser(username, password);
-      if (token) {  // check that the token is not undefined
-        // store the token
-        localStorage.setItem('app-token', token);
-        // update the login state
-        setIsLoggedIn(true);
-        // console.log('login', token);
-        console.log("isLoggedIn", isLoggedIn);
-      } else {
-        console.log('Error', 'authentication failure');
-        alert('500: Internal Sever Error');
-      }
-    };
-
-    const handleRegister = async (e) => {
-        // authenticate the user, the token is returned if success
-        const token = await registerUser(username, password, fname, lname);
-        if(token){  // check that the token is not undefined
-          // store the token
-          localStorage.setItem('app-token', token);
-          // update the login state
-          setIsLoggedIn(true);
-          console.log('login', token);
-        } else {
-          console.log('Error', 'registration or authentication failure');
-          alert('500: Internal Sever Error');
-        }
-      };
-
-    // input change event handler
-    const handleUsernameChange = (e) => {
-      username = e.target.value; // update local variable
-      console.log('value', username);
-    };
-  
-     // input change event handler
-    const handlePasswordChange = (e) => {
-      password = e.target.value; // update the reference
-      console.log('value', password);
-    };
-
-    // input change event handler
-    const handleFnameChange = (e) => {
-      fname = e.target.value; // update the reference
-      console.log('value', fname);
-    };
-
-    // input change event handler
-    const handleLnameChange = (e) => {
-      lname = e.target.value; // update the reference
-      console.log('value', lname);
-    };
-    
-    // conditional rendering based on the state
-    if (isLoggedIn === false) {
-      return (
-        <>
-          <Header isLoggedIn={false} /><Routes>
-              <Route path="/" element={<WelcomePage />} />
-              <Route path="/login" element={<LoginPage 
-                onLogin={handleLogin}
-                username={username}
-                onUsernameChange={handleUsernameChange}
-                password={password}
-                onPasswordChange={handlePasswordChange}
-                />} />
-              <Route path="/register" element={<RegistrationPage
-                onRegister={handleRegister} 
-                username={username}
-                onUsernameChange={handleUsernameChange}
-                password={password}
-                onPasswordChange={handlePasswordChange}
-                fname={fname}
-                onFnameChange={handleFnameChange}
-                lname={lname}
-                onLnameChange={handleLnameChange}
-                />} />
-              <Route path="/home" element={<Navigate to="/" />} />
-          </Routes>
-        </>
-      );
+    if (!token) {
+      alert('500: Internal Sever Error');
+    } else if (typeof token === "string") {
+      // store the token
+      localStorage.setItem('app-token', token);
+      // update the login state
+      setIsLoggedIn(true);
+      console.log('login', token);
+      console.log("isLoggedIn", isLoggedIn);
     } else {
-      return (
-        <>
-            <Header isLoggedIn={true} />
-            <Routes>
-                <Route path="/home" element={<HomePage />} />
-                <Route path="*" element={<Navigate to="/home" />} />
-                <Route path="/" element={<Navigate to="/home" />} />
-                <Route path="/login" element={<Navigate to="/home" />} />
-                <Route path="/register" element={<Navigate to="/home" />} />
-            </Routes>
-        </>
-      );
+      alert(`error ${token.status}: ${token.message}`);
     }
-  }
+  };
+
+  const handleRegister = async (e) => {
+    // authenticate the user, the token is returned if success
+    const token = await registerUser(username, password, fname, lname);
+
+    if (!token) {
+      alert('500: Internal Sever Error');
+    } else if (typeof token === "string") {
+      // store the token
+      localStorage.setItem('app-token', token);
+      // update the login state
+      setIsLoggedIn(true);
+      console.log('register', token);
+    } else {
+      alert(`error ${token.status}: ${token.message}`);
+    }
+  };
+
+  const handleLogout = async (e) => {
+    const status = await logoutUser(username, password);
+
+    if (!status) {
+      alert('500: Internal Sever Error');
+    } else if (typeof status === "number") {
+      if(status === 200) {
+        // detele the JWT once the backend response is 200
+        localStorage.removeItem('app-token');
+        // restart the app
+        window.location.reload();
+      }
+    } else {
+      alert(`error ${status.status}: ${status.message}`);
+    }
+  };
+
+  // input change event handler
+  const handleUsernameChange = (e) => {
+    username = e.target.value; // update local variable
+  };
+
+    // input change event handler
+  const handlePasswordChange = (e) => {
+    password = e.target.value; // update the reference
+  };
+
+  // input change event handler
+  const handleFnameChange = (e) => {
+    fname = e.target.value; // update the reference
+  };
+
+  // input change event handler
+  const handleLnameChange = (e) => {
+    lname = e.target.value; // update the reference
+  };
   
-  export default Login;
+  // conditional rendering based on the state
+  if (isLoggedIn === false) {
+    return (
+      <>
+        <Header isLoggedIn={false} /><Routes>
+            <Route path="/" element={<WelcomePage />} />
+            <Route path="/login" element={<LoginPage 
+              onLogin={handleLogin}
+              username={username}
+              onUsernameChange={handleUsernameChange}
+              password={password}
+              onPasswordChange={handlePasswordChange}
+              />} />
+            <Route path="/register" element={<RegistrationPage
+              onRegister={handleRegister} 
+              username={username}
+              onUsernameChange={handleUsernameChange}
+              password={password}
+              onPasswordChange={handlePasswordChange}
+              fname={fname}
+              onFnameChange={handleFnameChange}
+              lname={lname}
+              onLnameChange={handleLnameChange}
+              />} />
+            <Route path="/home" element={<Navigate to="/" />} />
+        </Routes>
+      </>
+    );
+  } else {
+    return (
+      <>
+          <Header isLoggedIn={true} onLogout={handleLogout}/>
+          <Routes>
+              <Route path="/home" element={<HomePage />} />
+              <Route path="*" element={<Navigate to="/home" />} />
+              <Route path="/" element={<Navigate to="/home" />} />
+              <Route path="/login" element={<Navigate to="/home" />} />
+              <Route path="/register" element={<Navigate to="/home" />} />
+          </Routes>
+      </>
+    );
+  }
+}
+
+export default Login;
