@@ -148,9 +148,18 @@ app.post('/post', async (req, res) => {
     tags,
   } = req.body;
 
-  if (!token || !title || !description || !course
-    || lookingFor === undefined || !modeOfCollab || !tags) {
-    return res.status(400).json({ error: 'All fields are required' });
+  // if (!token || !title || !description || !course
+  //   || lookingFor === undefined || !modeOfCollab || !tags) {
+  //   return res.status(400).json({ error: 'All fields are required' });
+  // }
+
+  if (typeof title !== 'string' || title.trim().length === 0 ||
+      typeof description !== 'string' || description.trim().length === 0 ||
+      typeof course !== 'string' || course.trim().length === 0 ||
+      typeof lookingFor !== 'number' || lookingFor <= 0 ||
+      typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0 ||
+      !Array.isArray(tags) || tags.some(tag => typeof tag !== 'string')) {
+    return res.status(400).json({ error: 'Invalid field types or values' });
   }
 
   let result;
@@ -179,6 +188,7 @@ app.post('/post', async (req, res) => {
   }
 
   return res.status(201).json({ message: 'Post created successfully', postId: result.insertedId });
+
 });
 
 module.exports = app;
