@@ -34,7 +34,7 @@ describe('POST /post endpoint testing', () => {
         title: 'Test Title',
         description: 'Test Description',
         course: 'Test Course',
-        lookingFor: 'partners',
+        lookingFor: 3,
         modeOfCollab: 'online',
         tags: ['tag1', 'tag2'],
       };
@@ -71,7 +71,7 @@ describe('POST /post endpoint testing', () => {
         title: 'Test Title',
         description: 'Test Description',
         course: 'Test Course',
-        lookingFor: 'partners',
+        lookingFor: 2,
         modeOfCollab: 'online',
         tags: ['tag1', 'tag2'],
       };
@@ -89,7 +89,7 @@ describe('POST /post endpoint testing', () => {
         title: 'Test Title',
         description: 'Test Description',
         course: 'Test Course',
-        lookingFor: 'partners',
+        lookingFor: 3,
         modeOfCollab: 'online',
         tags: ['tag1', 'tag2'],
       };
