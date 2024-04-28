@@ -4,7 +4,8 @@
   "description": "for deployment of the frontend and backend",
   "main": "./backend/index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "build": "npm install && cd src/controller/frontend && npm install && npm run build"
   },
   "repository": {
     "type": "git",
