@@ -26,6 +26,11 @@
       "react-app/jest"
     ]
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^axios$": "axios/dist/node/axios.cjs"
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -42,12 +47,16 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@eslint/eslintrc": "^3.0.2",
     "@eslint/js": "^9.0.0",
+    "axios-mock-adapter": "^1.22.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "globals": "^15.0.0"
+    "globals": "^15.0.0",
+    "jest": "^27.5.1",
+    "jest-watch-typeahead": "^2.2.2",
+    "regenerator-runtime": "^0.14.1"
   }
 }

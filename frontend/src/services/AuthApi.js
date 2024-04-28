@@ -40,7 +40,7 @@ export const registerUser = async (username, password, fname, lname) => {
   } catch (err) {
     console.log('error', err.message);
     const errorJawn = {
-      message: err.response.data,
+      message: err.response.data.error,
       status: err.response.status,
     };
     // if there's no response attribute of the error, that means there was a
@@ -53,6 +53,7 @@ export const registerUser = async (username, password, fname, lname) => {
   return response.data.token;
 };
 
+// will be used for checking if the user's token is still valid when the user tries to navigate to other logged-in-necessary pages
 export const verifyUser = async () => {
   let response;
   try {
@@ -61,7 +62,7 @@ export const verifyUser = async () => {
   } catch (err) {
     console.log('error', err.message);
     const errorJawn = {
-      message: err.response.data,
+      message: err.response.data.error,
       status: err.response.status,
     };
     // if there's no response attribute of the error, that means there was a
@@ -83,7 +84,17 @@ export const logoutUser = async () => {
     response = await axios.post(`${rootURL}/logout`);
   } catch (err) {
     console.log('error', err.message);
+    const errorJawn = {
+      message: err.response.data.error,
+      status: err.response.status,
+    };
+    // if there's no response attribute of the error, that means there was a
+    // CONNECTION REFUSED error trying to connect to the backend, so just return null
+    if (!errorJawn) {
+      return null;
+    }
+    return errorJawn;
   }
-  console.log(response.status);
-  return response.status;
+
+  return response;
 };

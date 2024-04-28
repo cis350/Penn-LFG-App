@@ -49,7 +49,6 @@ function AuthContext() {
       // update the login state
       setIsLoggedIn(true);
       console.log('login', token);
-      console.log("isLoggedIn", isLoggedIn);
     } else {
       alert(`error ${token.status}: ${token.message}`);
     }
@@ -73,19 +72,17 @@ function AuthContext() {
   };
 
   const handleLogout = async (e) => {
-    const status = await logoutUser(username, password);
+    const response = await logoutUser(username, password);
 
-    if (!status) {
+    if (!response) {
       alert('500: Internal Sever Error');
-    } else if (typeof status === "number") {
-      if(status === 200) {
-        // detele the JWT once the backend response is 200
-        localStorage.removeItem('app-token');
-        // restart the app
-        window.location.reload();
-      }
+    } else if (response.status === 200 || response.status === 403 || response.status === 401) {
+      console.log(response.status);
+      localStorage.removeItem('app-token');
+      // restart the app
+      window.location.reload();
     } else {
-      alert(`error ${status.status}: ${status.message}`);
+      alert(`error ${response.status}: ${response.message}`);
     }
   };
 
