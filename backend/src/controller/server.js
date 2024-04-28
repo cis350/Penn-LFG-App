@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 const users = require('../model/users');
 const jwtAuth = require('./controllerUtils/jwtAuth');
 const addPost = require('../model/posts');
@@ -11,9 +12,10 @@ const app = express();
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, './frontend/build')));
 
 // REGISTER ENDPOINT
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
   // retrieve body input parameters
   const {
     username, password, fname, lname,
@@ -55,7 +57,7 @@ app.post('/register', async (req, res) => {
 });
 
 // LOGIN ENDPOINT
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
   // Checking for the presence of username and password
   if (!username || !password) {
@@ -92,7 +94,7 @@ app.post('/login', async (req, res) => {
 });
 
 // VERIFY AUTHENTICATION ENDPOINT - Check if a user has a valid JWT token
-app.post('/verify', async (req, res) => {
+app.post('/api/verify', async (req, res) => {
   const token = req.headers.authorization;
   if (!token) {
     return res.status(400).json({ error: 'All fields are required' });
@@ -112,7 +114,7 @@ app.post('/verify', async (req, res) => {
 });
 
 // LOGOUT ENDPOINT
-app.post('/logout', async (req, res) => {
+app.post('/api/logout', async (req, res) => {
   // verify the session
   console.log('logout', req.headers.authorization);
   const token = req.headers.authorization;
@@ -137,7 +139,7 @@ app.post('/logout', async (req, res) => {
 });
 
 // POST ENDPOINT - Create a Post
-app.post('/post', async (req, res) => {
+app.post('/api/post', async (req, res) => {
   const {
     token,
     title,
@@ -187,6 +189,10 @@ app.post('/post', async (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
   return res.status(201).json({ message: 'Post created successfully', postId: result.insertedId });
+});
+
+app.get('*', (req, res) => {
+	return res.send(path.join(__dirname, './frontend/build.index.html'));
 });
 
 module.exports = app;
