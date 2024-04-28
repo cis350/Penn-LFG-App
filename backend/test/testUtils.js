@@ -75,10 +75,22 @@ const getDataFromDB = async (db) => {
   }
 };
 
+const getPostsFromDB = async (db) => {
+  try {
+    const result = await db.collection('Post').find({}).toArray();
+    return result; // Return the array of posts from the database.
+  } catch (err) {
+    console.log('error', err.message);
+    return []; // Provide a default return value in case of error.
+  }
+};
+
+
 // Export the functions to avoid unused variable errors
 module.exports = {
   getDataFromDB,
   insertTestUserToDB,
   deleteTestUserFromDB,
   deleteTestPostFromDB,
+  getPostsFromDB,
 };
