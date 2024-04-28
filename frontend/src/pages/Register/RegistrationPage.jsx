@@ -1,6 +1,6 @@
 import React from 'react';
-import './css/RegistrationPage.css';
-import CustomButton from './CustomButton'; // Assuming you've created this button component
+import './RegistrationPage.css';
+import CustomButton from '../../components/CustomButton'; // Assuming you've created this button component
 
 function RegistrationPage({ onRegister, username, onUsernameChange, 
   password, onPasswordChange, fname, onFnameChange, lname, onLnameChange }) {
