@@ -153,12 +153,12 @@ app.post('/post', async (req, res) => {
   //   return res.status(400).json({ error: 'All fields are required' });
   // }
 
-  if (typeof title !== 'string' || title.trim().length === 0 ||
-      typeof description !== 'string' || description.trim().length === 0 ||
-      typeof course !== 'string' || course.trim().length === 0 ||
-      typeof lookingFor !== 'number' || lookingFor <= 0 ||
-      typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0 ||
-      !Array.isArray(tags) || tags.some(tag => typeof tag !== 'string')) {
+  if (typeof title !== 'string' || title.trim().length === 0
+      || typeof description !== 'string' || description.trim().length === 0
+      || typeof course !== 'string' || course.trim().length === 0
+      || typeof lookingFor !== 'number' || lookingFor <= 0
+      || typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0
+      || !Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string')) {
     return res.status(400).json({ error: 'Invalid field types or values' });
   }
 
@@ -186,9 +186,7 @@ app.post('/post', async (req, res) => {
     console.log('Error creating post:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
-
   return res.status(201).json({ message: 'Post created successfully', postId: result.insertedId });
-
 });
 
 module.exports = app;

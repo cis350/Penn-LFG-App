@@ -48,16 +48,16 @@ const deleteTestPostFromDB = async (db, testPostId) => {
     if (deletedCount === 1) {
       console.log('info', 'Successfully deleted test post');
       return true;
-    } else if (deletedCount === 0) {
+    } if (deletedCount === 0) {
       console.log('warning', 'Test post was not found or already deleted');
-    } else {
-      console.log('warning', `Unexpected number of posts deleted: ${deletedCount}`);
+      return false;
     }
+    console.log('warning', `Unexpected number of posts deleted: ${deletedCount}`);
+    return false;
   } catch (err) {
     console.log('error', err.message);
     return err; // Ensure return in catch block
   }
-  return false;
 };
 
 /**
@@ -84,7 +84,6 @@ const getPostsFromDB = async (db) => {
     return []; // Provide a default return value in case of error.
   }
 };
-
 
 // Export the functions to avoid unused variable errors
 module.exports = {
