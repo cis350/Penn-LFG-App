@@ -1,0 +1,22 @@
+{
+  "name": "deployment",
+  "version": "1.0.0",
+  "description": "for deployment of the frontend and backend",
+  "main": "./backend/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cis350/Team-8-alain-sem-adam-abhinav-gabe.git"
+  },
+  "keywords": [
+    "heroku"
+  ],
+  "author": "Alain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cis350/Team-8-alain-sem-adam-abhinav-gabe/issues"
+  },
+  "homepage": "https://github.com/cis350/Team-8-alain-sem-adam-abhinav-gabe#readme"
+}
