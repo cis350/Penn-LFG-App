@@ -15,7 +15,7 @@ const newPost = {
   title: 'Sample Post Title',
   description: 'This is a sample description for the post test.',
   course: 'Software Engineering',
-  lookingFor: 'Project Partner',
+  lookingFor: 2,
   modeOfCollab: 'Remote',
   tags: ['project', 'collaboration', 'SE']
 };
