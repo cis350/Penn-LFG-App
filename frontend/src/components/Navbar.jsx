@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import './css/Navbar.css';
 import CustomButton from './CustomButton';
 
-function Navbar({ isLoggedIn , onLogout}) {
-
+function Navbar({ isLoggedIn, onLogout }) {
   const handleClick = (event) => {
     event.preventDefault();
     onLogout(); // Call the passed-in login handler

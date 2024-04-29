@@ -17,15 +17,13 @@ export const loginUser = async (username, password) => {
     // return the token
   } catch (err) {
     console.log('error', err);
+    if (!err.response) { // checks if the database is offline
+      return null;
+    }
     const errorJawn = {
       message: err.response.data.error,
       status: err.response.status,
     };
-    // if there's no response attribute of the error, that means there was a
-    // CONNECTION REFUSED error trying to connect to the backend, so just return null
-    if (!errorJawn) {
-      return null;
-    }
     return errorJawn;
   }
   return response.data.token;
@@ -39,21 +37,20 @@ export const registerUser = async (username, password, fname, lname) => {
     });
   } catch (err) {
     console.log('error', err.message);
+    if (!err.response) { // checks if the database is offline
+      return null;
+    }
     const errorJawn = {
       message: err.response.data.error,
       status: err.response.status,
     };
-    // if there's no response attribute of the error, that means there was a
-    // CONNECTION REFUSED error trying to connect to the backend, so just return null
-    if (!errorJawn) {
-      return null;
-    }
     return errorJawn;
   }
   return response.data.token;
 };
 
-// will be used for checking if the user's token is still valid when the user tries to navigate to other logged-in-necessary pages
+// will be used for checking if the user's token is still valid when the
+// user tries to navigate to other logged-in-necessary pages
 export const verifyUser = async () => {
   let response;
   try {
@@ -61,15 +58,13 @@ export const verifyUser = async () => {
     response = await axios.post(`${rootURL}/verify`);
   } catch (err) {
     console.log('error', err.message);
+    if (!err.response) { // checks if the database is offline
+      return null;
+    }
     const errorJawn = {
       message: err.response.data.error,
       status: err.response.status,
     };
-    // if there's no response attribute of the error, that means there was a
-    // CONNECTION REFUSED error trying to connect to the backend, so just return null
-    if (!errorJawn) {
-      return null;
-    }
     return errorJawn;
   }
 
@@ -84,15 +79,13 @@ export const logoutUser = async () => {
     response = await axios.post(`${rootURL}/logout`);
   } catch (err) {
     console.log('error', err.message);
+    if (!err.response) { // checks if the database is offline
+      return null;
+    }
     const errorJawn = {
       message: err.response.data.error,
       status: err.response.status,
     };
-    // if there's no response attribute of the error, that means there was a
-    // CONNECTION REFUSED error trying to connect to the backend, so just return null
-    if (!errorJawn) {
-      return null;
-    }
     return errorJawn;
   }
 
