@@ -192,7 +192,7 @@ app.post('/api/post', async (req, res) => {
 });
 
 app.get('*', (req, res) => {
-	return res.send(path.join(__dirname, './frontend/build.index.html'));
+	return res.send(path.join(__dirname, './frontend/build/index.html'));
 });
 
 module.exports = app;
