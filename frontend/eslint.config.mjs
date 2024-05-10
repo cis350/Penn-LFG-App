@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
 import pluginJs from "@eslint/js";
+import cypressGlobals from "eslint-plugin-cypress/globals";
 
 // mimic CommonJS variables -- not needed if using CommonJS
 const __filename = fileURLToPath(import.meta.url);
@@ -39,4 +40,16 @@ export default [
       }, 
     }, 
   },
+  {
+    files: ["components/cypress/*.js"],
+    env: {
+      "cypress/globals": true 
+    },
+    plugins: [
+      "cypress"
+    ],
+    extends: [
+      "plugin:cypress/recommended"
+    ]
+  }
 ];
