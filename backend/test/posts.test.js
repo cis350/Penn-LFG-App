@@ -1,23 +1,25 @@
 const request = require('supertest');
+const jwt = require('jsonwebtoken');
 const { getDB, closeMongoDBConnection } = require('../src/model/dbUtils');
 const app = require('../src/controller/server');
-const { getDataFromDB, deleteTestPostFromDB, insertTestUserToDB, getPostsFromDB } = require('./testUtils');
-const jwt = require('jsonwebtoken');
+const {
+  deleteTestPostFromDB, insertTestUserToDB, getPostsFromDB,
+} = require('./testUtils');
 
 const testUser = {
   username: 'testUser',
   password: 'testPassword',
   fname: 'Test',
-  lname: 'User'
+  lname: 'User',
 };
 
 const newPost = {
   title: 'Sample Post Title',
   description: 'This is a sample description for the post test.',
   course: 'Software Engineering',
-  lookingFor: 'Project Partner',
+  lookingFor: 2,
   modeOfCollab: 'Remote',
-  tags: ['project', 'collaboration', 'SE']
+  tags: ['project', 'collaboration', 'SE'],
 };
 
 // TEST POST ENDPOINT
@@ -51,17 +53,15 @@ describe('POST /post endpoint integration test', () => {
       .expect(201)
       .expect('Content-Type', /json/);
 
-    postId = response.body.postId; 
+    postId = response.body.postId;
     const data = await getPostsFromDB(db);
 
-    expect(data.some((post) =>
-      post.title === newPost.title &&
-      post.description === newPost.description &&
-      post.course === newPost.course &&
-      post.owner === testUser.username &&
-      post.lookingFor === newPost.lookingFor &&
-      post.modeOfCollab === newPost.modeOfCollab &&
-      JSON.stringify(post.tags) === JSON.stringify(newPost.tags)
-    )).toBe(true);
+    expect(data.some((post) => post.title === newPost.title
+      && post.description === newPost.description
+      && post.course === newPost.course
+      && post.owner === testUser.username
+      && post.lookingFor === newPost.lookingFor
+      && post.modeOfCollab === newPost.modeOfCollab
+      && JSON.stringify(post.tags) === JSON.stringify(newPost.tags))).toBe(true);
   });
 });

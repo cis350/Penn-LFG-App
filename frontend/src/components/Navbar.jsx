@@ -3,13 +3,18 @@ import { Link } from 'react-router-dom';
 import './css/Navbar.css';
 import CustomButton from './CustomButton';
 
-function Navbar({ isLoggedIn }) {
+function Navbar({ isLoggedIn, onLogout }) {
+  const handleClick = (event) => {
+    event.preventDefault();
+    onLogout(); // Call the passed-in login handler
+  };
+
   return (
     <nav className="navbar">
       {isLoggedIn ? (
         <>
           <Link to="/dashboard" className="active-link">Dashboard</Link>
-          <CustomButton variant="small">Logout</CustomButton>
+          <CustomButton variant="small" onClick={handleClick}>Logout</CustomButton>
         </>
       ) : (
         <>

@@ -91,16 +91,16 @@ app.post('/login', async (req, res) => {
   return res.status(200).json({ message: 'User logged in successfully', token });
 });
 
-// AUTH ENDPOINT - Check if a user has a valid JWT token
+// VERIFY AUTHENTICATION ENDPOINT - Check if a user has a valid JWT token
 app.post('/verify', async (req, res) => {
-  const { token } = req.body;
+  const token = req.headers.authorization;
   if (!token) {
     return res.status(400).json({ error: 'All fields are required' });
   }
   let verifyStatus;
   try {
     verifyStatus = await jwtAuth.verifyUser(token);
-  } catch (err) {
+  } catch (error) {
     console.log('Error verifying user:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
@@ -109,6 +109,31 @@ app.post('/verify', async (req, res) => {
   }
 
   return res.status(200).json({ message: 'User verified successfully' });
+});
+
+// LOGOUT ENDPOINT
+app.post('/logout', async (req, res) => {
+  // verify the session
+  console.log('logout', req.headers.authorization);
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(400).json({ error: 'No valid session token present.' });
+  }
+  let verifyStatus;
+  try {
+    verifyStatus = await jwtAuth.verifyUser(token);
+    if (verifyStatus === 1) { // expired session
+      return res.status(403).json({ message: 'Session expired already' });
+    }
+    if (verifyStatus === 2 || verifyStatus === 3) { // invalid user or jwt
+      return res.status(401).json({ message: 'Invalid user or session' });
+    }
+    // session valid blacklist the JWT
+    jwtAuth.blacklistJWT(token);
+  } catch (err) {
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+  return res.status(200).json({ message: 'Session terminated' });
 });
 
 // POST ENDPOINT - Create a Post
@@ -123,9 +148,18 @@ app.post('/post', async (req, res) => {
     tags,
   } = req.body;
 
-  if (!token || !title || !description || !course
-    || lookingFor === undefined || !modeOfCollab || !tags) {
-    return res.status(400).json({ error: 'All fields are required' });
+  // if (!token || !title || !description || !course
+  //   || lookingFor === undefined || !modeOfCollab || !tags) {
+  //   return res.status(400).json({ error: 'All fields are required' });
+  // }
+
+  if (typeof title !== 'string' || title.trim().length === 0
+      || typeof description !== 'string' || description.trim().length === 0
+      || typeof course !== 'string' || course.trim().length === 0
+      || typeof lookingFor !== 'number' || lookingFor <= 0
+      || typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0
+      || !Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string')) {
+    return res.status(400).json({ error: 'Invalid field types or values' });
   }
 
   let result;
@@ -152,7 +186,6 @@ app.post('/post', async (req, res) => {
     console.log('Error creating post:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
-
   return res.status(201).json({ message: 'Post created successfully', postId: result.insertedId });
 });
 

@@ -34,7 +34,7 @@ describe('POST /post endpoint testing', () => {
         title: 'Test Title',
         description: 'Test Description',
         course: 'Test Course',
-        lookingFor: 'partners',
+        lookingFor: 3,
         modeOfCollab: 'online',
         tags: ['tag1', 'tag2'],
       };
@@ -48,7 +48,6 @@ describe('POST /post endpoint testing', () => {
       expect(response.body).toHaveProperty('message', 'Post created successfully');
       expect(response.body).toHaveProperty('postId');
       await deleteTestPostFromDB(db, response.body.postId);
-
     });
 
     it('should return a 400 error if any required field is missing', async () => {
@@ -72,7 +71,7 @@ describe('POST /post endpoint testing', () => {
         title: 'Test Title',
         description: 'Test Description',
         course: 'Test Course',
-        lookingFor: 'partners',
+        lookingFor: 2,
         modeOfCollab: 'online',
         tags: ['tag1', 'tag2'],
       };
@@ -90,7 +89,7 @@ describe('POST /post endpoint testing', () => {
         title: 'Test Title',
         description: 'Test Description',
         course: 'Test Course',
-        lookingFor: 'partners',
+        lookingFor: 3,
         modeOfCollab: 'online',
         tags: ['tag1', 'tag2'],
       };

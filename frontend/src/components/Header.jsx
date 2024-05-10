@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import './css/Header.css';
 
-function Header({ isLoggedIn }) {
+function Header({ isLoggedIn, onLogout }) {
   return (
     <header className="header">
       <Link to="/">
@@ -12,7 +12,7 @@ function Header({ isLoggedIn }) {
           <span className="brand-lfg"> LFG</span>
         </h1>
       </Link>
-      <Navbar isLoggedIn={isLoggedIn} />
+      <Navbar isLoggedIn={isLoggedIn} onLogout={onLogout} />
     </header>
   );
 }
