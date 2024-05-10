@@ -189,4 +189,102 @@ app.post('/post', async (req, res) => {
   return res.status(201).json({ message: 'Post created successfully', postId: result.insertedId });
 });
 
+app.put('/post/:id', async (req, res) => {
+  const { token } = req.body;
+  const postId = req.params.id;
+
+  if (!token) {
+    return res.status(400).json({ error: 'Token is required' });
+  }
+
+  let updateFields = {};
+  const allowedFields = ['title', 'description', 'course', 'lookingFor', 'modeOfCollab', 'tags'];
+  allowedFields.forEach(field => {
+    if (req.body[field] !== undefined) {
+      updateFields[field] = req.body[field];
+    }
+  });
+
+  if (Object.keys(updateFields).length === 0) {
+    return res.status(400).json({ error: 'No valid fields provided for update' });
+  }
+
+  try {
+    // Verify user by token
+    const verifyStatus = await jwtAuth.verifyUser(token);
+    if (verifyStatus !== 0) {
+      return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+
+    // Decode the token to get the username
+    const decoded = jwt.verify(token, process.env.KEY);
+    const { username } = decoded;
+
+    // Get user's data from username
+    const user = await users.getUserByUName(username);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if the user is the owner of the post
+    const post = await posts.getPostById(postId);
+    if (!post || post.owner !== username) {
+      return res.status(403).json({ error: 'Unauthorized to edit this post' });
+    }
+
+    // Update the post
+    const result = await posts.updatePost(postId, updateFields);
+    if (!result) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    return res.status(200).json({ message: 'Post updated successfully' });
+  } catch (error) {
+    console.log('Error updating post:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.delete('/post/:postId', async (req, res) => {
+  const { postId } = req.params;
+  const token = req.headers.authorization.split(' ')[1];
+
+  try {
+    // Verify user by token
+    const verifyStatus = await jwtAuth.verifyUser(token);
+    if (verifyStatus !== 0) {
+      return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+
+    // Decode the token to get the username
+    const decoded = jwt.verify(token, process.env.KEY);
+    const { username } = decoded;
+
+    // Get user's data from username
+    const user = await users.getUserByUName(username);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if the user is the owner of the post
+    const post = await posts.getPostById(postId);
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    if (post.owner !== username) {
+      return res.status(403).json({ error: 'Unauthorized to delete this post' });
+    }
+
+    // Delete the post
+    const deleteResult = await posts.deletePost(postId);
+    if (!deleteResult) {
+      return res.status(500).json({ error: 'Failed to delete the post' });
+    }
+
+    return res.status(200).json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    console.log('Error deleting post:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
 module.exports = app;
