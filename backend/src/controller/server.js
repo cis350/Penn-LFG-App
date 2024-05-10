@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const users = require('../model/users');
 const jwtAuth = require('./controllerUtils/jwtAuth');
-const addPost = require('../model/posts');
+const posts = require('../model/posts');
 
 const app = express();
 
@@ -138,8 +138,8 @@ app.post('/logout', async (req, res) => {
 
 // POST ENDPOINT - Create a Post
 app.post('/post', async (req, res) => {
+  const token = req.headers.authorization;
   const {
-    token,
     title,
     description,
     course,
@@ -147,7 +147,7 @@ app.post('/post', async (req, res) => {
     modeOfCollab,
     tags,
   } = req.body;
-
+  console.log(token)
   // if (!token || !title || !description || !course
   //   || lookingFor === undefined || !modeOfCollab || !tags) {
   //   return res.status(400).json({ error: 'All fields are required' });
@@ -181,7 +181,7 @@ app.post('/post', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    result = await addPost(username, title, description, course, lookingFor, modeOfCollab, tags);
+    result = await posts.addPost(username, title, description, course, lookingFor, modeOfCollab, tags);
   } catch (error) {
     console.log('Error creating post:', error);
     return res.status(500).json({ error: 'Internal server error' });
@@ -190,12 +190,8 @@ app.post('/post', async (req, res) => {
 });
 
 app.put('/post/:id', async (req, res) => {
-  const { token } = req.body;
+  const token = req.headers.authorization;
   const postId = req.params.id;
-
-  if (!token) {
-    return res.status(400).json({ error: 'Token is required' });
-  }
 
   let updateFields = {};
   const allowedFields = ['title', 'description', 'course', 'lookingFor', 'modeOfCollab', 'tags'];
@@ -221,13 +217,16 @@ app.put('/post/:id', async (req, res) => {
     const { username } = decoded;
 
     // Get user's data from username
-    const user = await users.getUserByUName(username);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+    // const user = await users.getUserByUName(username);
+    // console.log("Username" + username)
+    // console.log("User:"+ user)
+    // if (!user) {
+    //   return res.status(404).json({ error: 'User not found' });
+    // }
 
     // Check if the user is the owner of the post
     const post = await posts.getPostById(postId);
+    console.log(post)
     if (!post || post.owner !== username) {
       return res.status(403).json({ error: 'Unauthorized to edit this post' });
     }
@@ -247,7 +246,7 @@ app.put('/post/:id', async (req, res) => {
 
 app.delete('/post/:postId', async (req, res) => {
   const { postId } = req.params;
-  const token = req.headers.authorization.split(' ')[1];
+  const token = req.headers.authorization;
 
   try {
     // Verify user by token
@@ -261,10 +260,10 @@ app.delete('/post/:postId', async (req, res) => {
     const { username } = decoded;
 
     // Get user's data from username
-    const user = await users.getUserByUName(username);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+    // const user = await users.getUserByUName(username);
+    // if (!user) {
+    //   return res.status(404).json({ error: 'User not found' });
+    // }
 
     // Check if the user is the owner of the post
     const post = await posts.getPostById(postId);
@@ -287,4 +286,17 @@ app.delete('/post/:postId', async (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+app.get('/posts', async (req, res) => {
+  try {
+    const allPosts = await posts.getAllPosts();
+    return res.status(200).json(allPosts);
+  } catch (error) {
+    console.log('Error retrieving posts:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+
 module.exports = app;
