@@ -19,19 +19,19 @@ describe('Penn LFG End-to-End Tests', () => {
     
       cy.get('.custom-button.large').contains('Register').click(); 
     
-      cy.contains('Here is your posts feed.').should('be.visible');
+      cy.contains('My Feed').should('be.visible');
     });
     
   
     it('Testing login flow', () => {
       cy.get('button').contains('Login').click(); 
   
-      cy.get('input[placeholder="username"]').type('testuser');
-      cy.get('input[placeholder="password"]').type('password123');
+      cy.get('input[placeholder="username"]').type('seme2e');
+      cy.get('input[placeholder="password"]').type('sem');
   
       cy.get('.custom-button.large').contains('Login').click(); 
   
-      cy.contains('Here is your posts feed.').should('be.visible');
+      cy.contains('My Feed').should('be.visible');
     });
   
   });

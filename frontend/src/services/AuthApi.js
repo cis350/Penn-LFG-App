@@ -91,3 +91,5 @@ export const logoutUser = async () => {
 
   return response;
 };
+
+export default {loginUser, logoutUser, verifyUser, registerUser}
