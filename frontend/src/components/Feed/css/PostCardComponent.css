@@ -36,10 +36,18 @@
     display: inline-block;
   }
   
-  .posted-by {
+  .posted-on {
     display: block;
     text-align: right;
-    color: #999;
+    color: #777575;
+    margin-top: 10px;
+    font-size: 0.85em;
+  }
+
+  .posted-by {
+    display: block;
+    text-align: left;
+    color: #777575;
     margin-top: 10px;
     font-size: 0.85em;
   }

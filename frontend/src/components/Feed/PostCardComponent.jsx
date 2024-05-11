@@ -1,8 +1,17 @@
 // PostCardComponent.jsx
 import React from 'react';
 import './css/PostCardComponent.css';
+import moment from 'moment-timezone';
+import CustomButton from '../CustomButton';
 
-function PostCardComponent({ username, title, description, tags, course, groupSize, collabMode }) {
+function convertToEST(dateString) {
+  return moment(dateString).tz("America/New_York").format('MM/DD/YYYY hh:mm:ss A');
+}
+
+function PostCardComponent({ username, title, description, tags, course, groupSize, collabMode, time, onEdit, currentUser }) {
+
+  const isOwner = username === currentUser;
+
   return (
     <div className="post-card">
       <h2>{title}</h2>
@@ -16,6 +25,8 @@ function PostCardComponent({ username, title, description, tags, course, groupSi
         ))}
       </div>
       <span className="posted-by">Posted by: {username}</span>
+      <span className="posted-on">Posted on: {convertToEST(time)}</span>
+      {isOwner && <CustomButton variant="edit" onClick={onEdit}>Edit</CustomButton>}
     </div>
   );
 }

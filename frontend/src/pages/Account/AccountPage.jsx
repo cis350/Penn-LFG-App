@@ -1,32 +1,51 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-// import '../WelcomePage.css';
-// import CustomButton from '../../components/CustomButton';
+import React, { useState, useEffect } from 'react';
+import PostCardComponent from '../../components/Feed/PostCardComponent.jsx';
+import './AccountPage.css'; // Assume similar styling to FeedPage.css
+import getMyFeed from '../../services/FeedApi.js';
 
-// function WelcomePage() {
-//   return (
-//     <div className="welcome-page">
-//       <h1>
-//         <span className="brand-penn-title">Penn</span>
-//         <span className="brand-lfg-title"> LFG</span>
-//       </h1>
-//       <p className="subtitle">
-//         The premier app for finding study buddies, HW collaborators,
-//         and group project partners at the University of Pennsylvania.
-//       </p>
-//       <div className="button-group">
-//         <Link to="/login">
-//           <CustomButton variant="large">Login</CustomButton>
-//         </Link>
-//         <Link to="/register">
-//           <CustomButton variant="large">Register</CustomButton>
-//         </Link>
-//       </div>
-//       <footer className="footer">
-//         Built by Penn students, for Penn students. ♥
-//       </footer>
-//     </div>
-//   );
-// }
+function AccountPage() {
+  const [posts, setPosts] = useState([]);
+  const currentUser = "testUser";
 
-// export default WelcomePage;
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      let userPosts = await getMyFeed(); 
+      if (userPosts && Array.isArray(userPosts)) {
+        setPosts(userPosts);
+      } else {
+        console.error('Failed to fetch user posts:', userPosts);
+        setPosts([]); 
+      }
+    };
+    
+    fetchUserPosts();
+  }, []);
+
+  const handleEditPost = (postId) => {
+    console.log('Editing post:', postId); // Placeholder logic
+    // You might set a state here to open an edit modal or form
+  };
+
+  return (
+    <div className="account-page">
+      <h1 className="account-header">My Posts</h1>
+      {posts.map((post, index) => (
+        <PostCardComponent
+          key={index}
+          username={post.owner}
+          title={post.title}
+          description={post.description}
+          tags={post.tags}
+          course={post.course}
+          groupSize={post.lookingFor}
+          collabMode={post.modeOfCollab}
+          time={post.createdAt}
+          onEdit={() => handleEditPost(post.id)} 
+          currentUser={currentUser}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default AccountPage;

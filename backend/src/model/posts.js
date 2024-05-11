@@ -1,7 +1,8 @@
-const dbUtils = require('./dbUtils');
 const { ObjectId } = require('mongodb');
+const dbUtils = require('./dbUtils');
 
 const addPost = async (username, title, description, course, lookingFor, modeOfCollab, tags) => {
+  console.log("add post got called")
   // Create a new post
   const db = await dbUtils.getDB();
   const postsCollection = db.collection('Post');
@@ -45,12 +46,20 @@ const deletePost = async (postId) => {
 };
 
 const getAllPosts = async () => {
+  console.log("get all posts got called")
   const db = await dbUtils.getDB();
   const postsCollection = db.collection('Post');
-  const allPosts = await postsCollection.find({}).toArray();
+  const allPosts = await postsCollection.find({}).sort({createdAt:-1}).toArray();
   return allPosts;
 };
 
+const getMyPosts = async (username) => {
+  const db = await dbUtils.getDB();
+  const postsCollection = db.collection('Post');
+  const userPosts = await postsCollection.find({ owner: username }).toArray();
+  return userPosts;
+};
 
-
-module.exports = { addPost, getPostById, updatePost, deletePost, getAllPosts };
+module.exports = {
+  addPost, getPostById, updatePost, deletePost, getAllPosts,
+};

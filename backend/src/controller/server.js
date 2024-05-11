@@ -147,20 +147,42 @@ app.post('/post', async (req, res) => {
     modeOfCollab,
     tags,
   } = req.body;
-  console.log(token)
-  // if (!token || !title || !description || !course
-  //   || lookingFor === undefined || !modeOfCollab || !tags) {
-  //   return res.status(400).json({ error: 'All fields are required' });
-  // }
 
-  if (typeof title !== 'string' || title.trim().length === 0
-      || typeof description !== 'string' || description.trim().length === 0
-      || typeof course !== 'string' || course.trim().length === 0
-      || typeof lookingFor !== 'number' || lookingFor <= 0
-      || typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0
-      || !Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string')) {
-    return res.status(400).json({ error: 'Invalid field types or values' });
-  }
+  if (typeof title !== 'string' || title.trim().length === 0) {
+    return res.status(400).json({ error: 'Invalid or missing title' });
+}
+
+if (typeof description !== 'string' || description.trim().length === 0) {
+    return res.status(400).json({ error: 'Invalid or missing description' });
+}
+
+if (typeof course !== 'string' || course.trim().length === 0) {
+    return res.status(400).json({ error: 'Invalid or missing course name' });
+}
+
+if (typeof lookingFor !== 'number') {
+    return res.status(400).json({ error: 'group size is not a number' });
+}
+if (lookingFor <= 0) {
+  return res.status(400).json({ error: 'too small group size' });
+}
+
+if (typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0) {
+    return res.status(400).json({ error: 'Invalid or missing mode of collaboration' });
+}
+
+if (!Array.isArray(tags) || tags.some(tag => typeof tag !== 'string')) {
+    return res.status(400).json({ error: 'Invalid tags format' });
+}
+
+  // if (typeof title !== 'string' || title.trim().length === 0
+  //     || typeof description !== 'string' || description.trim().length === 0
+  //     || typeof course !== 'string' || course.trim().length === 0
+  //     || typeof lookingFor !== 'number' || lookingFor <= 0
+  //     || typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0
+  //     || !Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string')) {
+  //   return res.status(400).json({ error: 'Invalid field types or values' });
+  // }
 
   let result;
   try {
@@ -181,7 +203,8 @@ app.post('/post', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    result = await posts.addPost(username, title, description, course, lookingFor, modeOfCollab, tags);
+    result = await posts
+      .addPost(username, title, description, course, lookingFor, modeOfCollab, tags);
   } catch (error) {
     console.log('Error creating post:', error);
     return res.status(500).json({ error: 'Internal server error' });
@@ -189,13 +212,14 @@ app.post('/post', async (req, res) => {
   return res.status(201).json({ message: 'Post created successfully', postId: result.insertedId });
 });
 
+// POST ENDPOINT - Edit a post
 app.put('/post/:id', async (req, res) => {
   const token = req.headers.authorization;
   const postId = req.params.id;
 
-  let updateFields = {};
+  const updateFields = {};
   const allowedFields = ['title', 'description', 'course', 'lookingFor', 'modeOfCollab', 'tags'];
-  allowedFields.forEach(field => {
+  allowedFields.forEach((field) => {
     if (req.body[field] !== undefined) {
       updateFields[field] = req.body[field];
     }
@@ -226,7 +250,7 @@ app.put('/post/:id', async (req, res) => {
 
     // Check if the user is the owner of the post
     const post = await posts.getPostById(postId);
-    console.log(post)
+    console.log(post);
     if (!post || post.owner !== username) {
       return res.status(403).json({ error: 'Unauthorized to edit this post' });
     }
@@ -244,6 +268,7 @@ app.put('/post/:id', async (req, res) => {
   }
 });
 
+// POST ENDPOINT - Delete a post
 app.delete('/post/:postId', async (req, res) => {
   const { postId } = req.params;
   const token = req.headers.authorization;
@@ -297,6 +322,14 @@ app.get('/posts', async (req, res) => {
   }
 });
 
-
+app.get('/myposts', async (req, res) => {
+  try {
+    const allPosts = await posts.getMyPosts();
+    return res.status(200).json(allPosts);
+  } catch (error) {
+    console.log('Error retrieving posts:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 module.exports = app;

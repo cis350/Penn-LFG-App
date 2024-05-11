@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Navigate, Routes, Route } from 'react-router-dom';
+import { Navigate, Routes, Route, useNavigate } from 'react-router-dom';
 import { loginUser, registerUser, logoutUser } from '../services/AuthApi';
 import Header from '../components/Header';
 import WelcomePage from '../pages/Welcome/WelcomePage';
 import LoginPage from '../pages/Login/LoginPage';
 import RegistrationPage from '../pages/Register/RegistrationPage';
 import FeedPage from '../pages/Feed/FeedPage';
-import AccountPage from '../pages/Account/AccountPage'
+import AccountPage from '../pages/Account/AccountPage';
+import CreatePostPage from '../pages/CreatePost/CreatePostPage';
+
 
 /**
  * The login/logout component is stateful
@@ -27,6 +29,7 @@ import AccountPage from '../pages/Account/AccountPage'
 
 function AuthContext() {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('app-token') !== null); // changed from sessionStorage to localStorage
+  const navigate = useNavigate();
   let username;
   let password;
   let fname;
@@ -79,6 +82,8 @@ function AuthContext() {
     } else if (response.status === 200 || response.status === 403 || response.status === 401) {
       console.log(response.status);
       localStorage.removeItem('app-token');
+      setIsLoggedIn(false);
+      navigate('/');
       // restart the app
       window.location.reload();
     } else {
@@ -151,6 +156,7 @@ function AuthContext() {
       <Header isLoggedIn={true} onLogout={handleLogout} />
       <Routes>
         <Route path="/feed" element={<FeedPage />} />
+        <Route path="/create-post" element={<CreatePostPage />} />
         <Route path="*" element={<Navigate to="/feed" />} />
         <Route path="/" element={<Navigate to="/feed" />} />
         <Route path="/login" element={<Navigate to="/feed" />} />
