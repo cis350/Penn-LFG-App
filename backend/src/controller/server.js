@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const users = require('../model/users');
 const jwtAuth = require('./controllerUtils/jwtAuth');
-const addPost = require('../model/posts');
+const posts = require('../model/posts');
 
 const app = express();
 
@@ -138,8 +138,8 @@ app.post('/logout', async (req, res) => {
 
 // POST ENDPOINT - Create a Post
 app.post('/post', async (req, res) => {
+  const token = req.headers.authorization;
   const {
-    token,
     title,
     description,
     course,
@@ -148,19 +148,41 @@ app.post('/post', async (req, res) => {
     tags,
   } = req.body;
 
-  // if (!token || !title || !description || !course
-  //   || lookingFor === undefined || !modeOfCollab || !tags) {
-  //   return res.status(400).json({ error: 'All fields are required' });
-  // }
+  if (typeof title !== 'string' || title.trim().length === 0) {
+    return res.status(400).json({ error: 'Invalid or missing title' });
+}
 
-  if (typeof title !== 'string' || title.trim().length === 0
-      || typeof description !== 'string' || description.trim().length === 0
-      || typeof course !== 'string' || course.trim().length === 0
-      || typeof lookingFor !== 'number' || lookingFor <= 0
-      || typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0
-      || !Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string')) {
-    return res.status(400).json({ error: 'Invalid field types or values' });
-  }
+if (typeof description !== 'string' || description.trim().length === 0) {
+    return res.status(400).json({ error: 'Invalid or missing description' });
+}
+
+if (typeof course !== 'string' || course.trim().length === 0) {
+    return res.status(400).json({ error: 'Invalid or missing course name' });
+}
+
+if (typeof lookingFor !== 'number') {
+    return res.status(400).json({ error: 'group size is not a number' });
+}
+if (lookingFor <= 0) {
+  return res.status(400).json({ error: 'too small group size' });
+}
+
+if (typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0) {
+    return res.status(400).json({ error: 'Invalid or missing mode of collaboration' });
+}
+
+if (!Array.isArray(tags) || tags.some(tag => typeof tag !== 'string')) {
+    return res.status(400).json({ error: 'Invalid tags format' });
+}
+
+  // if (typeof title !== 'string' || title.trim().length === 0
+  //     || typeof description !== 'string' || description.trim().length === 0
+  //     || typeof course !== 'string' || course.trim().length === 0
+  //     || typeof lookingFor !== 'number' || lookingFor <= 0
+  //     || typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0
+  //     || !Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string')) {
+  //   return res.status(400).json({ error: 'Invalid field types or values' });
+  // }
 
   let result;
   try {
@@ -181,12 +203,133 @@ app.post('/post', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    result = await addPost(username, title, description, course, lookingFor, modeOfCollab, tags);
+    result = await posts
+      .addPost(username, title, description, course, lookingFor, modeOfCollab, tags);
   } catch (error) {
     console.log('Error creating post:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
   return res.status(201).json({ message: 'Post created successfully', postId: result.insertedId });
+});
+
+// POST ENDPOINT - Edit a post
+app.put('/post/:id', async (req, res) => {
+  const token = req.headers.authorization;
+  const postId = req.params.id;
+
+  const updateFields = {};
+  const allowedFields = ['title', 'description', 'course', 'lookingFor', 'modeOfCollab', 'tags'];
+  allowedFields.forEach((field) => {
+    if (req.body[field] !== undefined) {
+      updateFields[field] = req.body[field];
+    }
+  });
+
+  if (Object.keys(updateFields).length === 0) {
+    return res.status(400).json({ error: 'No valid fields provided for update' });
+  }
+
+  try {
+    // Verify user by token
+    const verifyStatus = await jwtAuth.verifyUser(token);
+    if (verifyStatus !== 0) {
+      return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+
+    // Decode the token to get the username
+    const decoded = jwt.verify(token, process.env.KEY);
+    const { username } = decoded;
+
+    // Get user's data from username
+    // const user = await users.getUserByUName(username);
+    // console.log("Username" + username)
+    // console.log("User:"+ user)
+    // if (!user) {
+    //   return res.status(404).json({ error: 'User not found' });
+    // }
+
+    // Check if the user is the owner of the post
+    const post = await posts.getPostById(postId);
+    console.log(post);
+    if (!post || post.owner !== username) {
+      return res.status(403).json({ error: 'Unauthorized to edit this post' });
+    }
+
+    // Update the post
+    const result = await posts.updatePost(postId, updateFields);
+    if (!result) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    return res.status(200).json({ message: 'Post updated successfully' });
+  } catch (error) {
+    console.log('Error updating post:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST ENDPOINT - Delete a post
+app.delete('/post/:postId', async (req, res) => {
+  const { postId } = req.params;
+  const token = req.headers.authorization;
+
+  try {
+    // Verify user by token
+    const verifyStatus = await jwtAuth.verifyUser(token);
+    if (verifyStatus !== 0) {
+      return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+
+    // Decode the token to get the username
+    const decoded = jwt.verify(token, process.env.KEY);
+    const { username } = decoded;
+
+    // Get user's data from username
+    // const user = await users.getUserByUName(username);
+    // if (!user) {
+    //   return res.status(404).json({ error: 'User not found' });
+    // }
+
+    // Check if the user is the owner of the post
+    const post = await posts.getPostById(postId);
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    if (post.owner !== username) {
+      return res.status(403).json({ error: 'Unauthorized to delete this post' });
+    }
+
+    // Delete the post
+    const deleteResult = await posts.deletePost(postId);
+    if (!deleteResult) {
+      return res.status(500).json({ error: 'Failed to delete the post' });
+    }
+
+    return res.status(200).json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    console.log('Error deleting post:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/posts', async (req, res) => {
+  try {
+    const allPosts = await posts.getAllPosts();
+    return res.status(200).json(allPosts);
+  } catch (error) {
+    console.log('Error retrieving posts:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/myposts', async (req, res) => {
+  try {
+    const allPosts = await posts.getMyPosts();
+    return res.status(200).json(allPosts);
+  } catch (error) {
+    console.log('Error retrieving posts:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 module.exports = app;

@@ -10,4 +10,4 @@ export const setHeaders = () => {
   axios.defaults.headers.common.Authorization = localStorage.getItem('app-token');
 };
 
-export const rootURL = 'http://localhost:5050'; // change to https://pennlfg-4fcf469ce489.herokuapp.com for deployed
+export const rootURL = 'http://localhost:5050';
