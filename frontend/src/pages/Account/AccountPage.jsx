@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PostCardComponent from '../../components/Feed/PostCardComponent.jsx';
-import './AccountPage.css'; // Assume similar styling to FeedPage.css
-import getMyFeed from '../../services/FeedApi.js';
+import './AccountPage.css'; 
+import FeedApi from '../../services/FeedApi.js';
+import { useNavigate } from 'react-router-dom'; 
 
 function AccountPage() {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
-  const currentUser = "testUser";
+  const currentUser = localStorage.getItem('username');
 
   useEffect(() => {
     const fetchUserPosts = async () => {
-      let userPosts = await getMyFeed(); 
+      let userPosts = await FeedApi.getMyFeed(); 
       if (userPosts && Array.isArray(userPosts)) {
         setPosts(userPosts);
       } else {
@@ -19,11 +21,12 @@ function AccountPage() {
     };
     
     fetchUserPosts();
-  }, []);
+  }, [currentUser]);
 
   const handleEditPost = (postId) => {
-    console.log('Editing post:', postId); // Placeholder logic
-    // You might set a state here to open an edit modal or form
+    console.log('Editing post:', postId); 
+    localStorage.setItem('posts', postId);
+    navigate('/edit-post');
   };
 
   return (
@@ -40,7 +43,7 @@ function AccountPage() {
           groupSize={post.lookingFor}
           collabMode={post.modeOfCollab}
           time={post.createdAt}
-          onEdit={() => handleEditPost(post.id)} 
+          onEdit={() => handleEditPost(post['_id'])} 
           currentUser={currentUser}
         />
       ))}

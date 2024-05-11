@@ -324,11 +324,29 @@ app.get('/posts', async (req, res) => {
 
 app.get('/myposts', async (req, res) => {
   try {
-    const allPosts = await posts.getMyPosts();
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token, process.env.KEY);
+    const { username } = decoded;
+    const allPosts = await posts.getMyPosts(username);
+    console.log("get my posts got called");
+    console.log(allPosts);
     return res.status(200).json(allPosts);
   } catch (error) {
     console.log('Error retrieving posts:', error);
     return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/mypost/:postId', async (req, res) => {
+  const { postId } = req.params;
+  console.log("SOME TEXT", postId);
+  try {
+    const post = await posts.getPostById(postId);
+    console.log("post in server:", post)
+    return res.status(200).json({message: "Got post", post: post});
+  } catch (error) {
+    console.log('Error retrieving my post:', error);
+    return res.status(500).json({ error: 'Internal server error: Retrieving my post' });
   }
 });
 

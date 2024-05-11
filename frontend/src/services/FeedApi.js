@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { rootURL } from '../utils/ApiUtils';
+import { rootURL, setHeaders } from '../utils/ApiUtils';
 
 const getFeed = async () => {
   let response;
@@ -21,6 +21,7 @@ const getFeed = async () => {
 
 const getMyFeed = async () => {
   let response;
+  setHeaders();
   try {
     response = await axios.get(`${rootURL}/myposts`);
   } catch (err) {
@@ -37,4 +38,9 @@ const getMyFeed = async () => {
   return response.data;
 };
 
-export default getFeed;
+const apiFunctions = {
+  getFeed,
+  getMyFeed
+};
+
+export default apiFunctions;

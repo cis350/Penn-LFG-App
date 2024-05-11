@@ -61,5 +61,5 @@ const getMyPosts = async (username) => {
 };
 
 module.exports = {
-  addPost, getPostById, updatePost, deletePost, getAllPosts,
+  addPost, getPostById, updatePost, deletePost, getAllPosts, getMyPosts,
 };

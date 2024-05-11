@@ -8,6 +8,7 @@ import RegistrationPage from '../pages/Register/RegistrationPage';
 import FeedPage from '../pages/Feed/FeedPage';
 import AccountPage from '../pages/Account/AccountPage';
 import CreatePostPage from '../pages/CreatePost/CreatePostPage';
+import EditPostPage from '../pages/EditPost/EditPostPage';
 
 
 /**
@@ -49,6 +50,7 @@ function AuthContext() {
     } else if (typeof token === 'string') {
       // store the token
       localStorage.setItem('app-token', token);
+      localStorage.setItem('username', username);
       // update the login state
       setIsLoggedIn(true);
       console.log('login', token);
@@ -66,6 +68,7 @@ function AuthContext() {
     } else if (typeof token === 'string') {
       // store the token
       localStorage.setItem('app-token', token);
+      localStorage.setItem('username', username);
       // update the login state
       setIsLoggedIn(true);
       console.log('register', token);
@@ -82,6 +85,7 @@ function AuthContext() {
     } else if (response.status === 200 || response.status === 403 || response.status === 401) {
       console.log(response.status);
       localStorage.removeItem('app-token');
+      localStorage.removeItem('username', username);
       setIsLoggedIn(false);
       navigate('/');
       // restart the app
@@ -110,6 +114,8 @@ function AuthContext() {
   const handleLnameChange = (e) => {
     lname = e.target.value; // update the reference
   };
+
+  
 
   // conditional rendering based on the state
   if (isLoggedIn === false) {
@@ -162,6 +168,8 @@ function AuthContext() {
         <Route path="/login" element={<Navigate to="/feed" />} />
         <Route path="/register" element={<Navigate to="/feed" />} />
         <Route path="/account" element={<AccountPage />} />
+        <Route path="/edit-post" element={<EditPostPage />} />
+
       </Routes>
     </>
   );
