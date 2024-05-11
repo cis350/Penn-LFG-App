@@ -140,12 +140,12 @@ app.post('/logout', async (req, res) => {
 app.post('/post', async (req, res) => {
   const {
     token,
-    title,
-    description,
-    course,
-    lookingFor,
-    modeOfCollab,
-    tags,
+    title, // string
+    description, // string
+    course, // string
+    lookingFor, // number
+    modeOfCollab, // string
+    tags, // array of strings
   } = req.body;
 
   // if (!token || !title || !description || !course

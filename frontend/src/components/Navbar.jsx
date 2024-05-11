@@ -13,7 +13,7 @@ function Navbar({ isLoggedIn, onLogout }) {
     <nav className="navbar">
       {isLoggedIn ? (
         <>
-          <Link to="/dashboard" className="active-link">Dashboard</Link>
+          <Link to="/account" className="active-link">My Account</Link>
           <CustomButton variant="small" onClick={handleClick}>Logout</CustomButton>
         </>
       ) : (

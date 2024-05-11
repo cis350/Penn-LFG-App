@@ -5,7 +5,8 @@ import Header from '../components/Header';
 import WelcomePage from '../pages/Welcome/WelcomePage';
 import LoginPage from '../pages/Login/LoginPage';
 import RegistrationPage from '../pages/Register/RegistrationPage';
-import HomePage from '../pages/Home/HomePage';
+import FeedPage from '../pages/Feed/FeedPage';
+import AccountPage from '../pages/Account/AccountPage'
 
 /**
  * The login/logout component is stateful
@@ -149,11 +150,12 @@ function AuthContext() {
     <>
       <Header isLoggedIn={true} onLogout={handleLogout} />
       <Routes>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="*" element={<Navigate to="/home" />} />
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="/login" element={<Navigate to="/home" />} />
-        <Route path="/register" element={<Navigate to="/home" />} />
+        <Route path="/feed" element={<FeedPage />} />
+        <Route path="*" element={<Navigate to="/feed" />} />
+        <Route path="/" element={<Navigate to="/feed" />} />
+        <Route path="/login" element={<Navigate to="/feed" />} />
+        <Route path="/register" element={<Navigate to="/feed" />} />
+        <Route path="/account" element={<AccountPage />} />
       </Routes>
     </>
   );
