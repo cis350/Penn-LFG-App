@@ -8,10 +8,10 @@ describe('POST /post endpoint testing', () => {
   let db;
   let token;
   const userData = {
-    username: 'testuser',
-    password: 'testpassword',
-    fname: 'Test',
-    lname: 'User',
+    username: 'testuserNN',
+    password: 'testpasswordNN',
+    fname: 'TestNNN',
+    lname: 'UserNNN',
   };
 
   beforeAll(async () => {
@@ -20,17 +20,16 @@ describe('POST /post endpoint testing', () => {
     await request(app).post('/register').send(userData);
     const loginResponse = await request(app).post('/login').send({ username: userData.username, password: userData.password });
     token = loginResponse.body.token;
-  });
+  }, 10000);
 
   afterAll(async () => {
     await deleteTestUserFromDB(db, userData.username);
     await closeMongoDBConnection();
-  });
+  }, 10000);
 
   describe('Creating a post', () => {
     it('should successfully create a post when all required fields are provided', async () => {
       const postData = {
-        token,
         title: 'Test Title',
         description: 'Test Description',
         course: 'Test Course',
@@ -41,6 +40,7 @@ describe('POST /post endpoint testing', () => {
 
       const response = await request(app)
         .post('/post')
+        .set('Authorization', token)
         .send(postData)
         .expect(201)
         .expect('Content-Type', /json/);

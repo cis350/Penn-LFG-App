@@ -21,7 +21,7 @@ describe('GET users(s) endpoint integration test', () => {
    */
   beforeAll(async () => {
     db = await getDB();
-  });
+  }, 10000);
 
   /**
    * Delete all test data from the DB
@@ -34,7 +34,7 @@ describe('GET users(s) endpoint integration test', () => {
     } catch (err) {
       console.error('Error in closing the database connection', err);
     }
-  });
+  }, 10000);
 
   test('Register and delete user', async () => {
     await request(app)
