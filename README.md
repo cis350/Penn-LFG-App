@@ -8,3 +8,6 @@ Features:
 - Log in: Users can log in of their accounts using their correct credentials 
 - Register: Users can register a new account by providing their desired credentials
 - Post Creation: Users can create posts that will appear on their feed
+
+How to view:
+- Visit https://pennlfg-4fcf469ce489.herokuapp.com/
