@@ -1,0 +1,55 @@
+/* PostCardComponent.css */
+.post-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    position: relative;
+  }
+  
+  .post-card h2 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  .post-card p {
+    color: #666;
+    margin: 5px 0;
+  }
+  
+  .tags {
+    margin: 10px 0;
+  }
+  
+  .tag {
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    font-size: 0.85em;
+    font-family: Inter;
+    display: inline-block;
+  }
+  
+  .posted-on {
+    display: block;
+    text-align: right;
+    color: #777575;
+    margin-top: 10px;
+    font-size: 0.85em;
+  }
+
+  .posted-by {
+    display: block;
+    text-align: left;
+    color: #777575;
+    margin-top: 10px;
+    font-size: 0.85em;
+  }
+  
