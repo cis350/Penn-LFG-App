@@ -10,4 +10,4 @@ export const setHeaders = () => {
   axios.defaults.headers.common.Authorization = localStorage.getItem('app-token');
 };
 
-export const rootURL = 'http://localhost:5050/api';
+export const rootURL = 'https://pennlfg-4fcf469ce489.herokuapp.com/api';
