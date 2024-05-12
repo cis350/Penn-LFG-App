@@ -6,7 +6,6 @@ export const getFeed = async () => {
   try {
     response = await axios.get(`${rootURL}/posts`);
   } catch (err) {
-    console.log('error', err.message);
     if (!err.response) {
       return null;
     }

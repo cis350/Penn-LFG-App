@@ -1,11 +1,14 @@
 import axios from 'axios';
-import { getFeed, getMyFeed } from '../FeedApi';  // Adjust the import path as necessary
-import { loginUser, registerUser, verifyUser, logoutUser } from '../AuthApi';
-import { createPost, updatePost, deletePost, getPost } from '../PostApi';
+import { getFeed, getMyFeed } from '../FeedApi'; // Adjust the import path as necessary
+import {
+  loginUser, registerUser, verifyUser, logoutUser,
+} from '../AuthApi';
+import {
+  createPost, updatePost, deletePost, getPost,
+} from '../PostApi';
 import { rootURL } from '../../utils/ApiUtils';
 
 jest.mock('axios');
-
 
 describe('AuthApi', () => {
   describe('loginUser', () => {
@@ -17,14 +20,14 @@ describe('AuthApi', () => {
 
       expect(axios.post).toHaveBeenCalledWith('http://localhost:5050/login', {
         username: 'testuser',
-        password: 'password123'
+        password: 'password123',
       });
       expect(result).toEqual(token);
     });
 
     it('handles login failure due to network issues', async () => {
       axios.post.mockRejectedValue({
-        response: null
+        response: null,
       });
 
       const result = await loginUser('testuser', 'password123');
@@ -36,15 +39,15 @@ describe('AuthApi', () => {
       axios.post.mockRejectedValue({
         response: {
           data: { error: 'Invalid credentials' },
-          status: 401
-        }
+          status: 401,
+        },
       });
 
       const result = await loginUser('testuser', 'password123');
 
       expect(result).toEqual({
         message: 'Invalid credentials',
-        status: 401
+        status: 401,
       });
     });
   });
@@ -60,14 +63,14 @@ describe('AuthApi', () => {
         username: 'newuser',
         password: 'password123',
         fname: 'John',
-        lname: 'Doe'
+        lname: 'Doe',
       });
       expect(result).toEqual(token);
     });
 
     it('handles registration failure due to network issues', async () => {
       axios.post.mockRejectedValue({
-        response: null
+        response: null,
       });
 
       const result = await registerUser('newuser', 'password123', 'John', 'Doe');
@@ -79,15 +82,15 @@ describe('AuthApi', () => {
       axios.post.mockRejectedValue({
         response: {
           data: { error: 'Username exists' },
-          status: 409
-        }
+          status: 409,
+        },
       });
 
       const result = await registerUser('newuser', 'password123', 'John', 'Doe');
 
       expect(result).toEqual({
         message: 'Username exists',
-        status: 409
+        status: 409,
       });
     });
   });
@@ -115,13 +118,12 @@ describe('AuthApi', () => {
   });
 });
 
-
 describe('FeedApi', () => {
   describe('getFeed', () => {
     it('fetches successfully data from an API', async () => {
       const posts = [
         { id: 1, title: 'Post 1' },
-        { id: 2, title: 'Post 2' }
+        { id: 2, title: 'Post 2' },
       ];
       axios.get.mockResolvedValue({ data: posts });
 
@@ -133,9 +135,7 @@ describe('FeedApi', () => {
 
     it('fetches data with an error', async () => {
       const errorMessage = 'Network Error';
-      axios.get.mockImplementationOnce(() =>
-        Promise.reject(new Error(errorMessage))
-      );
+      axios.get.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)));
 
       const result = await getFeed();
 
@@ -148,7 +148,7 @@ describe('FeedApi', () => {
     it('fetches successfully data from an API', async () => {
       const myPosts = [
         { id: 1, title: 'My Post 1' },
-        { id: 2, title: 'My Post 2' }
+        { id: 2, title: 'My Post 2' },
       ];
       axios.get.mockResolvedValue({ data: myPosts });
 
@@ -163,8 +163,8 @@ describe('FeedApi', () => {
       axios.get.mockRejectedValue({
         response: {
           data: { error: errorMessage },
-          status: 404
-        }
+          status: 404,
+        },
       });
 
       const result = await getMyFeed();
@@ -172,7 +172,7 @@ describe('FeedApi', () => {
       expect(axios.get).toHaveBeenCalledWith('http://localhost:5050/myposts');
       expect(result).toEqual({
         message: errorMessage,
-        status: 404
+        status: 404,
       });
     });
   });
@@ -191,12 +191,12 @@ describe('PostApi', () => {
       const result = await createPost('New Post', 'A new post', 'Intro to Testing', 5, 'online', ['testing', 'react']);
 
       expect(axios.post).toHaveBeenCalledWith(`${rootURL}/post`, {
-        title: 'New Post', 
+        title: 'New Post',
         description: 'A new post',
-        course: 'Intro to Testing', 
-        lookingFor: 5, 
-        modeOfCollab: 'online', 
-        tags: ['testing', 'react']
+        course: 'Intro to Testing',
+        lookingFor: 5,
+        modeOfCollab: 'online',
+        tags: ['testing', 'react'],
       });
       expect(result).toEqual(postData);
     });
@@ -206,15 +206,15 @@ describe('PostApi', () => {
       axios.post.mockRejectedValue({
         response: {
           data: { error: errorMessage },
-          status: 400
-        }
+          status: 400,
+        },
       });
 
       const result = await createPost('New Post', 'A new post', 'Intro to Testing', 5, 'online', ['testing', 'react']);
 
       expect(result).toEqual({
         message: errorMessage,
-        status: 400
+        status: 400,
       });
     });
   });
@@ -227,12 +227,12 @@ describe('PostApi', () => {
       const result = await updatePost(1, 'Updated Post', 'Updated description', 'Advanced Testing', 10, 'remote', ['advanced']);
 
       expect(axios.put).toHaveBeenCalledWith(`${rootURL}/post/1`, {
-        title: 'Updated Post', 
+        title: 'Updated Post',
         description: 'Updated description',
-        course: 'Advanced Testing', 
-        lookingFor: 10, 
-        modeOfCollab: 'remote', 
-        tags: ['advanced']
+        course: 'Advanced Testing',
+        lookingFor: 10,
+        modeOfCollab: 'remote',
+        tags: ['advanced'],
       });
       expect(result).toEqual(updatedData);
     });
@@ -242,15 +242,15 @@ describe('PostApi', () => {
       axios.put.mockRejectedValue({
         response: {
           data: { error: errorMessage },
-          status: 404
-        }
+          status: 404,
+        },
       });
 
       const result = await updatePost(1, 'Updated Post', 'Updated description', 'Advanced Testing', 10, 'remote', ['advanced']);
 
       expect(result).toEqual({
         message: errorMessage,
-        status: 404
+        status: 404,
       });
     });
   });
@@ -269,15 +269,15 @@ describe('PostApi', () => {
       axios.delete.mockRejectedValue({
         response: {
           data: { error: errorMessage },
-          status: 404
-        }
+          status: 404,
+        },
       });
 
       const result = await deletePost(1);
 
       expect(result).toEqual({
         message: errorMessage,
-        status: 404
+        status: 404,
       });
     });
   });
@@ -298,17 +298,16 @@ describe('PostApi', () => {
       axios.get.mockRejectedValue({
         response: {
           data: { error: errorMessage },
-          status: 404
-        }
+          status: 404,
+        },
       });
 
       const result = await getPost(1);
 
       expect(result).toEqual({
         message: errorMessage,
-        status: 404
+        status: 404,
       });
     });
   });
 });
-

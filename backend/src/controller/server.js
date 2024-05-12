@@ -14,10 +14,6 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, './frontend/build')));
 
-app.get('*', (req, res) => {
-	return res.send(path.join(__dirname, './frontend/build/index.html'));
-});
-
 // REGISTER ENDPOINT
 app.post('/api/register', async (req, res) => {
   // retrieve body input parameters
@@ -271,12 +267,6 @@ app.delete('/post/:postId', async (req, res) => {
     const decoded = jwt.verify(token, process.env.KEY);
     const { username } = decoded;
 
-    // Get user's data from username
-    // const user = await users.getUserByUName(username);
-    // if (!user) {
-    //   return res.status(404).json({ error: 'User not found' });
-    // }
-
     // Check if the user is the owner of the post
     const post = await posts.getPostById(postId);
     if (!post) {
@@ -300,6 +290,7 @@ app.delete('/post/:postId', async (req, res) => {
 });
 
 app.get('/api/posts', async (req, res) => {
+  console.log("got here");
   try {
     const allPosts = await posts.getAllPosts();
     return res.status(200).json(allPosts);
@@ -332,5 +323,7 @@ app.get('/api/mypost/:postId', async (req, res) => {
     return res.status(500).json({ error: 'Internal server error: Retrieving my post' });
   }
 });
+
+app.get('*', (req, res) => res.send(path.join(__dirname, './frontend/build/index.html')));
 
 module.exports = app;

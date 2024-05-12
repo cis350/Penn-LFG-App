@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 describe('Penn LFG End-to-End Tests', () => {
   const appUrl = 'http://localhost:3000';
-  const username = 'seme2e'; 
+  const username = 'seme2e';
   const password = 'sem';
 
   beforeEach(() => {
@@ -22,7 +22,8 @@ describe('Penn LFG End-to-End Tests', () => {
     cy.get('input[name="courseName"]').type('CIS 3500');
     cy.get('input[name="lookingFor"]').type('3');
     cy.get('input[value="Online"]').check(); // Assuming radio buttons for communication mode
-    cy.get('input[id="tags"]').type('tag1').type('{enter}').type('tag2').type('{enter}');
+    cy.get('input[id="tags"]').type('tag1').type('{enter}').type('tag2')
+      .type('{enter}');
 
     // Submit the post
     cy.get('button').contains('Create post').click();
@@ -39,7 +40,7 @@ describe('Penn LFG End-to-End Tests', () => {
   });
 
   it('Testing logout flow', () => {
-    cy.get('button').contains('Logout').click(); 
+    cy.get('button').contains('Logout').click();
     cy.contains('Login').should('be.visible'); // Ensure login button or screen is visible after logout
   });
 
@@ -48,7 +49,8 @@ describe('Penn LFG End-to-End Tests', () => {
     cy.contains('My Account').click();
 
     // Click on the Edit button of the first post
-    cy.get('.post-card').first().find('.custom-button').contains('Edit').click();
+    cy.get('.post-card').first().find('.custom-button').contains('Edit')
+      .click();
 
     // Make changes to the post
     cy.get('input[name="title"]').clear().type('Updated Title');
@@ -56,7 +58,7 @@ describe('Penn LFG End-to-End Tests', () => {
     cy.get('input[name="courseName"]').clear().type('Updated Course');
     cy.get('input[name="lookingFor"]').clear().type('4');
     cy.get('input[name="modeOfCommunication"][value="Online"]').check();
-    cy.get('input[id="tags"]').type('tag3').type('{enter}')
+    cy.get('input[id="tags"]').type('tag3').type('{enter}');
 
     // Submit the changes
     cy.get('button').contains('Confirm changes').click();
@@ -77,7 +79,8 @@ describe('Penn LFG End-to-End Tests', () => {
     cy.contains('My Account').click();
 
     // Click on the Edit button of the first post
-    cy.get('.post-card').first().find('.custom-button').contains('Edit').click();
+    cy.get('.post-card').first().find('.custom-button').contains('Edit')
+      .click();
 
     // Capture the title of the post to delete for verification later
     cy.get('input[name="title"]').invoke('val').then((postTitle) => {
