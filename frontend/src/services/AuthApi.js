@@ -92,10 +92,3 @@ export const logoutUser = async () => {
 
   return response;
 };
-
-export default {
-  loginUser,
-  registerUser,
-  verifyUser,
-  logoutUser,
-}
