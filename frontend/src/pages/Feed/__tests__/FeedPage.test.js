@@ -3,7 +3,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import FeedPage from '../FeedPage'; // Adjust the path as necessary
-import FeedApi from '../../../services/FeedApi';
+import { getFeed } from '../../../services/FeedApi.js';
 
 // Mocking the Feed API
 jest.mock('../../../services/FeedApi', () => ({
@@ -12,7 +12,7 @@ jest.mock('../../../services/FeedApi', () => ({
 
 describe('FeedPage', () => {
   beforeEach(() => {
-    FeedApi.getFeed.mockResolvedValue([
+    getFeed.mockResolvedValue([
       {
         username: 'testUser',
         title: 'test group title',
@@ -48,7 +48,7 @@ describe('FeedPage', () => {
 
 
   test('no posts available message when API returns empty', async () => {
-    FeedApi.getFeed.mockResolvedValue([]);
+    getFeed.mockResolvedValue([]);
     render(<FeedPage />);
     await waitFor(() => {
       expect(screen.queryByText(/test group title/i)).not.toBeInTheDocument();
