@@ -1,9 +1,8 @@
 import axios from 'axios';
 import FeedApi from '../FeedApi';  // Adjust the import path as necessary
-import AuthApi from '../AuthApi';
-import PostApi from '../PostApi';
+import { loginUser, registerUser, verifyUser, logoutUser } from '../AuthApi';
+import { createPost, updatePost, deletePost, getPost } from '../PostApi';
 import { rootURL } from '../../utils/ApiUtils';
-
 
 jest.mock('axios');
 
@@ -14,7 +13,7 @@ describe('AuthApi', () => {
       const token = 'fake-jwt-token';
       axios.post.mockResolvedValue({ data: { token } });
 
-      const result = await AuthApi.loginUser('testuser', 'password123');
+      const result = await loginUser('testuser', 'password123');
 
       expect(axios.post).toHaveBeenCalledWith('http://localhost:5050/login', {
         username: 'testuser',
@@ -28,7 +27,7 @@ describe('AuthApi', () => {
         response: null
       });
 
-      const result = await AuthApi.loginUser('testuser', 'password123');
+      const result = await loginUser('testuser', 'password123');
 
       expect(result).toEqual(null);
     });
@@ -41,7 +40,7 @@ describe('AuthApi', () => {
         }
       });
 
-      const result = await AuthApi.loginUser('testuser', 'password123');
+      const result = await loginUser('testuser', 'password123');
 
       expect(result).toEqual({
         message: 'Invalid credentials',
@@ -55,7 +54,7 @@ describe('AuthApi', () => {
       const token = 'new-fake-jwt-token';
       axios.post.mockResolvedValue({ data: { token } });
 
-      const result = await AuthApi.registerUser('newuser', 'password123', 'John', 'Doe');
+      const result = await registerUser('newuser', 'password123', 'John', 'Doe');
 
       expect(axios.post).toHaveBeenCalledWith('http://localhost:5050/register', {
         username: 'newuser',
@@ -71,7 +70,7 @@ describe('AuthApi', () => {
         response: null
       });
 
-      const result = await AuthApi.registerUser('newuser', 'password123', 'John', 'Doe');
+      const result = await registerUser('newuser', 'password123', 'John', 'Doe');
 
       expect(result).toEqual(null);
     });
@@ -84,7 +83,7 @@ describe('AuthApi', () => {
         }
       });
 
-      const result = await AuthApi.registerUser('newuser', 'password123', 'John', 'Doe');
+      const result = await registerUser('newuser', 'password123', 'John', 'Doe');
 
       expect(result).toEqual({
         message: 'Username exists',
@@ -97,7 +96,7 @@ describe('AuthApi', () => {
     it('successfully verifies the user and returns the status code', async () => {
       axios.post.mockResolvedValue({ status: 200 });
 
-      const result = await AuthApi.verifyUser();
+      const result = await verifyUser();
 
       expect(axios.post).toHaveBeenCalledWith('http://localhost:5050/verify');
       expect(result).toEqual(200);
@@ -108,7 +107,7 @@ describe('AuthApi', () => {
     it('successfully logs out the user', async () => {
       axios.post.mockResolvedValue({ status: 200 });
 
-      const result = await AuthApi.logoutUser();
+      const result = await logoutUser();
 
       expect(axios.post).toHaveBeenCalledWith('http://localhost:5050/logout');
       expect(result).toMatchObject({ status: 200 });
@@ -189,7 +188,7 @@ describe('PostApi', () => {
       const postData = { id: 1, title: 'New Post', description: 'A new post' };
       axios.post.mockResolvedValue({ data: postData });
 
-      const result = await PostApi.createPost('New Post', 'A new post', 'Intro to Testing', 5, 'online', ['testing', 'react']);
+      const result = await createPost('New Post', 'A new post', 'Intro to Testing', 5, 'online', ['testing', 'react']);
 
       expect(axios.post).toHaveBeenCalledWith(`${rootURL}/post`, {
         title: 'New Post', 
@@ -211,7 +210,7 @@ describe('PostApi', () => {
         }
       });
 
-      const result = await PostApi.createPost('New Post', 'A new post', 'Intro to Testing', 5, 'online', ['testing', 'react']);
+      const result = await createPost('New Post', 'A new post', 'Intro to Testing', 5, 'online', ['testing', 'react']);
 
       expect(result).toEqual({
         message: errorMessage,
@@ -225,7 +224,7 @@ describe('PostApi', () => {
       const updatedData = { id: 1, title: 'Updated Post' };
       axios.put.mockResolvedValue({ data: updatedData });
 
-      const result = await PostApi.updatePost(1, 'Updated Post', 'Updated description', 'Advanced Testing', 10, 'remote', ['advanced']);
+      const result = await updatePost(1, 'Updated Post', 'Updated description', 'Advanced Testing', 10, 'remote', ['advanced']);
 
       expect(axios.put).toHaveBeenCalledWith(`${rootURL}/post/1`, {
         title: 'Updated Post', 
@@ -247,7 +246,7 @@ describe('PostApi', () => {
         }
       });
 
-      const result = await PostApi.updatePost(1, 'Updated Post', 'Updated description', 'Advanced Testing', 10, 'remote', ['advanced']);
+      const result = await updatePost(1, 'Updated Post', 'Updated description', 'Advanced Testing', 10, 'remote', ['advanced']);
 
       expect(result).toEqual({
         message: errorMessage,
@@ -260,7 +259,7 @@ describe('PostApi', () => {
     it('deletes a post successfully', async () => {
       axios.delete.mockResolvedValue({ status: 204 });
 
-      const result = await PostApi.deletePost(1);
+      const result = await deletePost(1);
 
       expect(axios.delete).toHaveBeenCalledWith(`${rootURL}/post/1`);
     });
@@ -274,7 +273,7 @@ describe('PostApi', () => {
         }
       });
 
-      const result = await PostApi.deletePost(1);
+      const result = await deletePost(1);
 
       expect(result).toEqual({
         message: errorMessage,
@@ -288,7 +287,7 @@ describe('PostApi', () => {
       const postData = { id: 1, title: 'Existing Post' };
       axios.get.mockResolvedValue({ data: postData });
 
-      const result = await PostApi.getPost(1);
+      const result = await getPost(1);
 
       expect(axios.get).toHaveBeenCalledWith(`${rootURL}/mypost/1`);
       expect(result).toEqual(postData);
@@ -303,7 +302,7 @@ describe('PostApi', () => {
         }
       });
 
-      const result = await PostApi.getPost(1);
+      const result = await getPost(1);
 
       expect(result).toEqual({
         message: errorMessage,

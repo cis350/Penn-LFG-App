@@ -11,7 +11,7 @@ import { rootURL, setHeaders } from '../utils/ApiUtils';
  * sends a POST request to the login endpoint
  * returns the JWT
  */
-const loginUser = async (username, password) => {
+export const loginUser = async (username, password) => {
   let response;
   try {
     response = await axios.post(`${rootURL}/login`, { username, password });
@@ -30,7 +30,7 @@ const loginUser = async (username, password) => {
   return response.data.token;
 };
 
-const registerUser = async (username, password, fname, lname) => {
+export const registerUser = async (username, password, fname, lname) => {
   let response;
   try {
     response = await axios.post(`${rootURL}/register`, {
@@ -52,7 +52,7 @@ const registerUser = async (username, password, fname, lname) => {
 
 // will be used for checking if the user's token is still valid when the
 // user tries to navigate to other logged-in-necessary pages
-const verifyUser = async () => {
+export const verifyUser = async () => {
   let response;
   try {
     setHeaders();
@@ -72,7 +72,7 @@ const verifyUser = async () => {
   return response.status;
 };
 
-const logoutUser = async () => {
+export const logoutUser = async () => {
   let response;
   try {
     // add JWT to headers
