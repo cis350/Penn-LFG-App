@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 const users = require('../model/users');
 const jwtAuth = require('./controllerUtils/jwtAuth');
 const posts = require('../model/posts');
@@ -11,9 +12,14 @@ const app = express();
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, './frontend/build')));
+
+app.get('*', (req, res) => {
+	return res.send(path.join(__dirname, './frontend/build/index.html'));
+});
 
 // REGISTER ENDPOINT
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
   // retrieve body input parameters
   const {
     username, password, fname, lname,
@@ -54,7 +60,7 @@ app.post('/register', async (req, res) => {
 });
 
 // LOGIN ENDPOINT
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
   // Checking for the presence of username and password
   if (!username || !password) {
@@ -91,7 +97,7 @@ app.post('/login', async (req, res) => {
 });
 
 // VERIFY AUTHENTICATION ENDPOINT - Check if a user has a valid JWT token
-app.post('/verify', async (req, res) => {
+app.post('/api/verify', async (req, res) => {
   const token = req.headers.authorization;
   if (!token) {
     return res.status(400).json({ error: 'All fields are required' });
@@ -111,7 +117,7 @@ app.post('/verify', async (req, res) => {
 });
 
 // LOGOUT ENDPOINT
-app.post('/logout', async (req, res) => {
+app.post('/api/logout', async (req, res) => {
   // verify the session
   console.log('logout', req.headers.authorization);
   const token = req.headers.authorization;
@@ -136,7 +142,7 @@ app.post('/logout', async (req, res) => {
 });
 
 // POST ENDPOINT - Create a Post
-app.post('/post', async (req, res) => {
+app.post('/api/post', async (req, res) => {
   const token = req.headers.authorization;
   const {
     title,
@@ -174,15 +180,6 @@ app.post('/post', async (req, res) => {
     return res.status(400).json({ error: 'Invalid tags format' });
   }
 
-  // if (typeof title !== 'string' || title.trim().length === 0
-  //     || typeof description !== 'string' || description.trim().length === 0
-  //     || typeof course !== 'string' || course.trim().length === 0
-  //     || typeof lookingFor !== 'number' || lookingFor <= 0
-  //     || typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0
-  //     || !Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string')) {
-  //   return res.status(400).json({ error: 'Invalid field types or values' });
-  // }
-
   let result;
   try {
     // Verify user by token
@@ -212,7 +209,7 @@ app.post('/post', async (req, res) => {
 });
 
 // POST ENDPOINT - Edit a post
-app.put('/post/:id', async (req, res) => {
+app.put('/api/post/:id', async (req, res) => {
   const token = req.headers.authorization;
   const postId = req.params.id;
 
@@ -302,7 +299,7 @@ app.delete('/post/:postId', async (req, res) => {
   }
 });
 
-app.get('/posts', async (req, res) => {
+app.get('/api/posts', async (req, res) => {
   try {
     const allPosts = await posts.getAllPosts();
     return res.status(200).json(allPosts);
@@ -312,7 +309,7 @@ app.get('/posts', async (req, res) => {
   }
 });
 
-app.get('/myposts', async (req, res) => {
+app.get('/api/myposts', async (req, res) => {
   try {
     const token = req.headers.authorization;
     const decoded = jwt.verify(token, process.env.KEY);
@@ -325,7 +322,7 @@ app.get('/myposts', async (req, res) => {
   }
 });
 
-app.get('/mypost/:postId', async (req, res) => {
+app.get('/api/mypost/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
     const post = await posts.getPostById(postId);

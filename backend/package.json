@@ -19,7 +19,8 @@
   "keywords": [
     "mongodb",
     "expressjs",
-    "nodejs"
+    "nodejs",
+    "heroku"
   ],
   "author": "Alain Welliver <alainw@seas.upenn.edu>",
   "license": "ISC",
