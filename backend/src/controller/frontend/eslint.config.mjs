@@ -12,7 +12,7 @@ const compat = new FlatCompat({baseDirectory: __dirname, recommendedConfig: plug
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   {
-    files: ["**/*.js"], 
+    files: ["**/*.js", "**/*.jsx"], 
   },
   {
     languageOptions: { 
@@ -29,6 +29,9 @@ export default [
     rules: {
       'no-console': 'off',
       "react/prop-types": "off",
+      'react/button-has-type': "off",
+      'no-alert': 'off',
+      'react/jsx-boolean-value': 'off',
     },
   },
   {
@@ -39,4 +42,24 @@ export default [
       }, 
     }, 
   },
+  {
+    files: ["components/cypress/*.js"],
+    env: {
+      "cypress/globals": true 
+    },
+    plugins: [
+      "cypress"
+    ],
+    extends: [
+      "plugin:cypress/recommended"
+    ]
+  },
+  {
+    files: ["./cypress/**/*"],
+    rules: {
+      'no-unused-vars': 'off',
+      'no-undef': 'off',
+      'no-console': 'off',
+    }
+  }
 ];

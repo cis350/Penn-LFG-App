@@ -1,0 +1,71 @@
+.create-post-page {
+    width: 100%;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    position: relative; /* Ensures child elements positioned absolutely are relative to this */
+}
+
+.header-actions { /* Assuming you add a div with this class for your action buttons */
+    position: absolute;
+    right: 20px;  /* Aligns the button to the right */
+    top: 20px;    /* Aligns the button to the top */
+}
+
+.custom-button.cancel {
+    background-color: rgb(136, 16, 16); /* Dark red background */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 8px 16px; /* Padding around the text */
+    cursor: pointer; /* Cursor indicates clickable */
+    border-radius: 4px; /* Rounded corners for the button */
+}
+
+.create-post-page h1 {
+    text-align: center; /* Centers your page title */
+    padding-top: 40px; /* Adds space above the title to not overlap with the button */
+}
+
+.create-post-page form {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-post-page label {
+    margin: 10px 0 5px;
+}
+
+.create-post-page input[type="text"],
+.create-post-page input[type="number"],
+.create-post-page textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.create-post-page .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.create-post-page .tag {
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.create-post-page button {
+    padding: 10px;
+    background-color: black; /* Ensures consistent color coding */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}

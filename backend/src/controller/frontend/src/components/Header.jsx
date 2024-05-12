@@ -4,7 +4,6 @@ import Navbar from './Navbar';
 import './css/Header.css';
 
 function Header({ isLoggedIn, onLogout }) {
-
   return (
     <header className="header">
       <Link to="/">
