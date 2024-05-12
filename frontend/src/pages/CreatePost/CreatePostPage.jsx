@@ -3,6 +3,14 @@ import { createPost } from '../../services/PostApi';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import CustomButton from '../../components/CustomButton';
 import './CreatePostPage.css';
+/**
+ * CreatePostPage Component
+ * This component is responsible for creating new posts. It uses a form where users can input details
+ * about the post such as title, description, course name, number of collaborators they are looking for,
+ * mode of communication, and tags. The state of the form is managed using the useState hook.
+ * The form data is submitted to the backend via the createPost function from PostApi.
+ * Users can navigate away using the useNavigate hook from react-router-dom.
+ */
 
 function CreatePostPage() {
     const navigate = useNavigate(); // Hook for navigating

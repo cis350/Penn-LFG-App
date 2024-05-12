@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import './WelcomePage.css';
 import CustomButton from '../../components/CustomButton';
 
+/**
+ * WelcomePage Component
+ * This component is responsible for rendering the welcome page. It contains a brand logo, a title, a subtitle,
+ * and a button group for users to login and register.
+ */
 function WelcomePage() {
   return (
     <div className="welcome-page">

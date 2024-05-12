@@ -3,6 +3,12 @@ import PostCardComponent from '../../components/Feed/PostCardComponent.jsx'
 import './FeedPage.css';
 import { getFeed } from '../../services/FeedApi.js';
 
+/**
+ * FeedPage Component
+ * This component is responsible for fetching the posts from the backend and displaying them on the feed page.
+ * It uses the getFeed function from FeedApi to fetch the posts and stores them in a state variable called posts.
+ * The posts are then displayed using the PostCardComponent.
+ */
 function FeedPage() {
   const [posts, setPosts] = useState([
     { username: 'testUser',

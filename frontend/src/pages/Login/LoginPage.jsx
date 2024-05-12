@@ -2,6 +2,11 @@ import React from 'react';
 import './LoginPage.css';
 import CustomButton from '../../components/CustomButton'; // Assuming you've created this button component
 
+/**
+ * LoginPage Component
+ * This component is responsible for rendering the login page. It contains a form where users can enter their username and password.
+ * The form data is submitted to the backend via the onLogin function.
+ */
 function LoginPage({ onLogin, username, onUsernameChange, password, onPasswordChange }) {
 
   const handleSubmit = (event) => {

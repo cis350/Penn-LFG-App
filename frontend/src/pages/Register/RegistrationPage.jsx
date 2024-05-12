@@ -2,6 +2,11 @@ import React from 'react';
 import './RegistrationPage.css';
 import CustomButton from '../../components/CustomButton'; // Assuming you've created this button component
 
+/**
+ * RegistrationPage Component
+ * This component is responsible for rendering the registration page. It contains a form where users can enter their username, password, first name, and last name.
+ * The form data is submitted to the backend via the onRegister function.
+ */
 function RegistrationPage({ onRegister, username, onUsernameChange, 
   password, onPasswordChange, fname, onFnameChange, lname, onLnameChange }) {
 

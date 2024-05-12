@@ -3,6 +3,14 @@ import { deletePost, updatePost, getPost } from '../../services/PostApi';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import CustomButton from '../../components/CustomButton';
 import './EditPostPage.css';
+/**
+ * EditPostPage Component
+ * This component is responsible for editing an existing post. It fetches the post data using the getPost function
+ * from PostApi based on the current post ID stored in localStorage. Users can update the post's title, description,
+ * course name, number of collaborators they are looking for, mode of communication, and tags.
+ * The state of the form is managed using the useState hook, and changes are submitted to the backend via the updatePost function.
+ * Users can navigate away using the useNavigate hook from react-router-dom.
+ */
 
 function EditPostPage() {
     const navigate = useNavigate(); // Hook for navigating

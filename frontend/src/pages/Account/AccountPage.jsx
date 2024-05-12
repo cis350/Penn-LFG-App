@@ -3,6 +3,12 @@ import PostCardComponent from '../../components/Feed/PostCardComponent.jsx';
 import './AccountPage.css'; 
 import { getMyFeed } from '../../services/FeedApi.js';
 import { useNavigate } from 'react-router-dom'; 
+/**
+ * AccountPage Component
+ * This component is responsible for displaying the user's posts on their account page.
+ * It fetches the posts from the backend using the getMyFeed service and displays them using the PostCardComponent.
+ * Users can also navigate to edit their posts by clicking on the edit button in the PostCardComponent.
+ */
 
 function AccountPage() {
   const navigate = useNavigate();

@@ -29,6 +29,11 @@ export const loginUser = async (username, password) => {
   }
   return response.data.token;
 };
+/**
+ * This function logs out the user
+ * sends a POST request to the logout endpoint
+ * and handles the response or any errors that may occur.
+ */
 
 export const registerUser = async (username, password, fname, lname) => {
   let response;
@@ -71,6 +76,14 @@ export const verifyUser = async () => {
 
   return response.status;
 };
+/**
+ * This function verifies the user's token by sending a POST request to the verify endpoint.
+ * It sets the necessary headers before making the request.
+ * If the request is successful, it returns the response status.
+ * In case of an error (e.g., network issues, server errors), it logs the error message,
+ * checks if the database is offline (no response from server), and returns a structured error object.
+ * This function is crucial for maintaining secure access to features that require user authentication.
+ */
 
 export const logoutUser = async () => {
   let response;
