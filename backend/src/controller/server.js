@@ -14,6 +14,10 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, './frontend/build')));
 
+app.get('*', (req, res) => {
+	return res.send(path.join(__dirname, './frontend/build/index.html'));
+});
+
 // REGISTER ENDPOINT
 app.post('/api/register', async (req, res) => {
   // retrieve body input parameters
@@ -275,12 +279,6 @@ app.delete('/post/:postId', async (req, res) => {
     // Decode the token to get the username
     const decoded = jwt.verify(token, process.env.KEY);
     const { username } = decoded;
-
-    // Get user's data from username
-    // const user = await users.getUserByUName(username);
-    // if (!user) {
-    //   return res.status(404).json({ error: 'User not found' });
-    // }
 
     // Check if the user is the owner of the post
     const post = await posts.getPostById(postId);
