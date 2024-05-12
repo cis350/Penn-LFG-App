@@ -11,3 +11,17 @@ Features:
 
 How to view:
 - Visit https://pennlfg-4fcf469ce489.herokuapp.com/
+
+How to run:
+
+Backend: 
+- cd into backend 
+- to run the server: 
+    - npm install 
+    - npm start
+
+Frontend: 
+- cd into frontend 
+- to run the server: 
+    - npm install 
+    - npm start
