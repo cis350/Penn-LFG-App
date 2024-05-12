@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import FeedPage from '../FeedPage'; // Adjust the path as necessary
+import FeedPage from '../FeedPage.jsx'; // Adjust the path as necessary
 import { getFeed } from '../../../services/FeedApi.js';
 
 // Mocking the Feed API
