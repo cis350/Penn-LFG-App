@@ -174,15 +174,6 @@ app.post('/post', async (req, res) => {
     return res.status(400).json({ error: 'Invalid tags format' });
   }
 
-  // if (typeof title !== 'string' || title.trim().length === 0
-  //     || typeof description !== 'string' || description.trim().length === 0
-  //     || typeof course !== 'string' || course.trim().length === 0
-  //     || typeof lookingFor !== 'number' || lookingFor <= 0
-  //     || typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0
-  //     || !Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string')) {
-  //   return res.status(400).json({ error: 'Invalid field types or values' });
-  // }
-
   let result;
   try {
     // Verify user by token
@@ -273,12 +264,6 @@ app.delete('/post/:postId', async (req, res) => {
     // Decode the token to get the username
     const decoded = jwt.verify(token, process.env.KEY);
     const { username } = decoded;
-
-    // Get user's data from username
-    // const user = await users.getUserByUName(username);
-    // if (!user) {
-    //   return res.status(404).json({ error: 'User not found' });
-    // }
 
     // Check if the user is the owner of the post
     const post = await posts.getPostById(postId);
