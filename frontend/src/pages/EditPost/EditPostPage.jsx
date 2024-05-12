@@ -16,15 +16,11 @@ function EditPostPage() {
         tags: []
     });
 
-
-    console.log(currentPostID);
-
     useEffect(() => {
         async function fetchPost(currentPostID) {
             try {
                 const result = await getPost(currentPostID);
                 const post = result.post;
-                console.log("The post I want", post);
                 setPostData({
                     title: post.title,
                     description: post.description,
@@ -39,12 +35,6 @@ function EditPostPage() {
         }
         fetchPost(currentPostID);
     }, [currentPostID]);
-
-    useEffect(() => {
-        console.log('Editing post title:', postData.title); // Ensure this logs after state update
-        console.log("post tags:", postData.tags); // Ensure this logs after state update
-    }, [postData]);   
-    // console.log('Editing post title:', postData.title);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -80,13 +70,11 @@ function EditPostPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("inputted edit post data", postData);
         const response = await updatePost(currentPostID, postData.title, postData.description, postData.courseName, postData.lookingFor, postData.modeOfCommunication, postData.tags);
 
         if (!response) {
             alert('500: Internal Sever Error');
         } else if (response.status === 400 || response.status === 401 || response.status === 404 || response.status === 500) {
-            console.log('testing response: ', response);
             alert(`error ${response.status}: ${response.message}`);
         } else {
             navigate('/feed');
@@ -95,12 +83,10 @@ function EditPostPage() {
 
     const handleDelete = async (e) => {
         e.preventDefault();
-        console.log("inputted deleted post data", postData);
         const response = await deletePost(currentPostID);
         if (!response) {
             alert('500: Internal Sever Error');
         } else if (response.status === 400 || response.status === 401 || response.status === 404 || response.status === 500) {
-            console.log('testing response: ', response);
             alert(`error ${response.status}: ${response.message}`);
         } else {
             navigate('/account');

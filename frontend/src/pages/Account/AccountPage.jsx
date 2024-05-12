@@ -24,7 +24,6 @@ function AccountPage() {
   }, [currentUser]);
 
   const handleEditPost = (postId) => {
-    console.log('Editing post:', postId); 
     localStorage.setItem('posts', postId);
     navigate('/edit-post');
   };

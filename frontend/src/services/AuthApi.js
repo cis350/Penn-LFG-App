@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import axios from 'axios';
 import { rootURL, setHeaders } from '../utils/ApiUtils';
 /**
@@ -10,7 +11,7 @@ import { rootURL, setHeaders } from '../utils/ApiUtils';
  * sends a POST request to the login endpoint
  * returns the JWT
  */
-export const loginUser = async (username, password) => {
+const loginUser = async (username, password) => {
   let response;
   try {
     response = await axios.post(`${rootURL}/login`, { username, password });
@@ -29,7 +30,7 @@ export const loginUser = async (username, password) => {
   return response.data.token;
 };
 
-export const registerUser = async (username, password, fname, lname) => {
+const registerUser = async (username, password, fname, lname) => {
   let response;
   try {
     response = await axios.post(`${rootURL}/register`, {
@@ -51,7 +52,7 @@ export const registerUser = async (username, password, fname, lname) => {
 
 // will be used for checking if the user's token is still valid when the
 // user tries to navigate to other logged-in-necessary pages
-export const verifyUser = async () => {
+const verifyUser = async () => {
   let response;
   try {
     setHeaders();
@@ -71,7 +72,7 @@ export const verifyUser = async () => {
   return response.status;
 };
 
-export const logoutUser = async () => {
+const logoutUser = async () => {
   let response;
   try {
     // add JWT to headers
@@ -92,4 +93,9 @@ export const logoutUser = async () => {
   return response;
 };
 
-export default {loginUser, logoutUser, verifyUser, registerUser}
+export default {
+  loginUser,
+  registerUser,
+  verifyUser,
+  logoutUser,
+}

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 describe('Penn LFG End-to-End Tests', () => {
     const appUrl = 'http://localhost:3000'; 
     const username = 'sem2';

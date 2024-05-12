@@ -40,7 +40,7 @@ const getMyFeed = async () => {
 
 const apiFunctions = {
   getFeed,
-  getMyFeed
+  getMyFeed,
 };
 
 export default apiFunctions;

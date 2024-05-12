@@ -48,7 +48,6 @@ app.post('/register', async (req, res) => {
   try {
     token = jwtAuth.authenticateUser(username);
   } catch (err) {
-    // console.log('error with authenticating', err.message);
     res.status(401).json({ error: 'error authenticating newly registered user token' });
   }
   return res.status(201).json({ message: 'User registered successfully', token });
@@ -150,30 +149,30 @@ app.post('/post', async (req, res) => {
 
   if (typeof title !== 'string' || title.trim().length === 0) {
     return res.status(400).json({ error: 'Invalid or missing title' });
-}
+  }
 
-if (typeof description !== 'string' || description.trim().length === 0) {
+  if (typeof description !== 'string' || description.trim().length === 0) {
     return res.status(400).json({ error: 'Invalid or missing description' });
-}
+  }
 
-if (typeof course !== 'string' || course.trim().length === 0) {
+  if (typeof course !== 'string' || course.trim().length === 0) {
     return res.status(400).json({ error: 'Invalid or missing course name' });
-}
+  }
 
-if (typeof lookingFor !== 'number') {
+  if (typeof lookingFor !== 'number') {
     return res.status(400).json({ error: 'group size is not a number' });
-}
-if (lookingFor <= 0) {
-  return res.status(400).json({ error: 'too small group size' });
-}
+  }
+  if (lookingFor <= 0) {
+    return res.status(400).json({ error: 'too small group size' });
+  }
 
-if (typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0) {
+  if (typeof modeOfCollab !== 'string' || modeOfCollab.trim().length === 0) {
     return res.status(400).json({ error: 'Invalid or missing mode of collaboration' });
-}
+  }
 
-if (!Array.isArray(tags) || tags.some(tag => typeof tag !== 'string')) {
+  if (!Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string')) {
     return res.status(400).json({ error: 'Invalid tags format' });
-}
+  }
 
   // if (typeof title !== 'string' || title.trim().length === 0
   //     || typeof description !== 'string' || description.trim().length === 0
@@ -240,17 +239,8 @@ app.put('/post/:id', async (req, res) => {
     const decoded = jwt.verify(token, process.env.KEY);
     const { username } = decoded;
 
-    // Get user's data from username
-    // const user = await users.getUserByUName(username);
-    // console.log("Username" + username)
-    // console.log("User:"+ user)
-    // if (!user) {
-    //   return res.status(404).json({ error: 'User not found' });
-    // }
-
     // Check if the user is the owner of the post
     const post = await posts.getPostById(postId);
-    console.log(post);
     if (!post || post.owner !== username) {
       return res.status(403).json({ error: 'Unauthorized to edit this post' });
     }
@@ -328,8 +318,6 @@ app.get('/myposts', async (req, res) => {
     const decoded = jwt.verify(token, process.env.KEY);
     const { username } = decoded;
     const allPosts = await posts.getMyPosts(username);
-    console.log("get my posts got called");
-    console.log(allPosts);
     return res.status(200).json(allPosts);
   } catch (error) {
     console.log('Error retrieving posts:', error);
@@ -339,11 +327,9 @@ app.get('/myposts', async (req, res) => {
 
 app.get('/mypost/:postId', async (req, res) => {
   const { postId } = req.params;
-  console.log("SOME TEXT", postId);
   try {
     const post = await posts.getPostById(postId);
-    console.log("post in server:", post)
-    return res.status(200).json({message: "Got post", post: post});
+    return res.status(200).json({ message: 'Got post', post });
   } catch (error) {
     console.log('Error retrieving my post:', error);
     return res.status(500).json({ error: 'Internal server error: Retrieving my post' });

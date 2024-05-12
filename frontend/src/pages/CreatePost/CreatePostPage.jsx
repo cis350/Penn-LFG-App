@@ -49,13 +49,11 @@ function CreatePostPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("inputted create post data", postData);
         const response = await createPost(postData.title, postData.description, postData.courseName, postData.lookingFor, postData.modeOfCommunication, postData.tags);
 
         if (!response) {
             alert('500: Internal Sever Error');
         } else if (response.status === 400 || response.status === 401 || response.status === 404 || response.status === 500) {
-            console.log('testing response: ', response);
             alert(`error ${response.status}: ${response.message}`);
         } else {
             navigate('/feed');

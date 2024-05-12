@@ -153,5 +153,3 @@ describe('API endpoint testing', () => {
     });
   });
 });
-
-

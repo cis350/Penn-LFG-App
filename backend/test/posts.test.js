@@ -74,7 +74,7 @@ describe('POST /post endpoint integration test', () => {
         course: 'Updated Course',
         lookingFor: 3,
         modeOfCollab: 'In-person',
-        tags: ['updated', 'test']
+        tags: ['updated', 'test'],
       };
 
       const response = await request(app)
@@ -94,7 +94,7 @@ describe('POST /post endpoint integration test', () => {
         course: 'Updated Course',
         lookingFor: 3,
         modeOfCollab: 'In-person',
-        tags: ['updated', 'test']
+        tags: ['updated', 'test'],
       };
 
       await request(app)
@@ -124,24 +124,22 @@ describe('POST /post endpoint integration test', () => {
     });
   });
 
-describe('GET /posts endpoint integration test', () => {
-  test('Retrieve all posts with valid token', async () => {
-    const response = await request(app)
-      .get('/posts')
-      .expect(200)
-      .expect('Content-Type', /json/);
+  describe('GET /posts endpoint integration test', () => {
+    test('Retrieve all posts with valid token', async () => {
+      const response = await request(app)
+        .get('/posts')
+        .expect(200)
+        .expect('Content-Type', /json/);
 
-    expect(Array.isArray(response.body)).toBe(true);
-    response.body.forEach(post => {
-      expect(post).toHaveProperty('title');
-      expect(post).toHaveProperty('description');
-      expect(post).toHaveProperty('course');
-      expect(post).toHaveProperty('lookingFor');
-      expect(post).toHaveProperty('modeOfCollab');
-      expect(post).toHaveProperty('tags');
+      expect(Array.isArray(response.body)).toBe(true);
+      response.body.forEach((post) => {
+        expect(post).toHaveProperty('title');
+        expect(post).toHaveProperty('description');
+        expect(post).toHaveProperty('course');
+        expect(post).toHaveProperty('lookingFor');
+        expect(post).toHaveProperty('modeOfCollab');
+        expect(post).toHaveProperty('tags');
+      });
     });
   });
-
-
-});
 });

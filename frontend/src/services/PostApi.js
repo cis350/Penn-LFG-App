@@ -22,11 +22,21 @@ export const createPost = async (title, description, course, lookingFor, modeOfC
   return response.data;
 };
 
-export const updatePost = async (postId, title, description, course, lookingFor, modeOfCollab, tags) => {
+export const updatePost = async (
+  postId,
+  title,
+  description,
+  course,
+  lookingFor,
+  modeOfCollab,
+  tags,
+) => {
   let response;
   try {
     setHeaders();
-    response = await axios.put(`${rootURL}/post/${postId}`, {title, description, course, lookingFor, modeOfCollab, tags});
+    response = await axios.put(`${rootURL}/post/${postId}`, {
+      title, description, course, lookingFor, modeOfCollab, tags,
+    });
   } catch (err) {
     console.log('Error updating post:', err.message);
     if (!err.response) {
@@ -59,7 +69,7 @@ export const deletePost = async (postId) => {
 };
 
 export const getPost = async (postId) => {
-  console.log("got to getPost");
+  console.log('got to getPost');
   let response;
   try {
     setHeaders();
@@ -77,4 +87,6 @@ export const getPost = async (postId) => {
   return response.data;
 };
 
-export default {createPost, deletePost, updatePost, getPost}
+export default {
+  createPost, deletePost, updatePost, getPost,
+};
