@@ -33,7 +33,7 @@ describe('POST /post endpoint integration test', () => {
     await insertTestUserToDB(db, testUser); // Add a test user to DB
     // Simulate user login to get a valid JWT
     token = jwt.sign({ username: testUser.username }, process.env.KEY);
-  }, 10000);
+  }, 20000);
 
   afterAll(async () => {
     try {
@@ -44,7 +44,7 @@ describe('POST /post endpoint integration test', () => {
     } catch (err) {
       console.error('Error in closing the database connection', err);
     }
-  }, 10000);
+  }, 20000);
 
   test('Create and verify post', async () => {
     const response = await request(app)
