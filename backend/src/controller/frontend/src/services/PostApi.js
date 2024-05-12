@@ -87,6 +87,3 @@ export const getPost = async (postId) => {
   return response.data;
 };
 
-export default {
-  createPost, deletePost, updatePost, getPost,
-};
