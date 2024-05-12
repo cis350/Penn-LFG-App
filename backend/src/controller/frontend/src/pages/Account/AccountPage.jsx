@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PostCardComponent from '../../components/Feed/PostCardComponent.jsx';
 import './AccountPage.css'; 
-import FeedApi from '../../services/FeedApi.js';
+import { getMyFeed } from '../../services/FeedApi.js';
 import { useNavigate } from 'react-router-dom'; 
 
 function AccountPage() {
@@ -11,7 +11,7 @@ function AccountPage() {
 
   useEffect(() => {
     const fetchUserPosts = async () => {
-      let userPosts = await FeedApi.getMyFeed(); 
+      let userPosts = await getMyFeed(); 
       if (userPosts && Array.isArray(userPosts)) {
         setPosts(userPosts);
       } else {

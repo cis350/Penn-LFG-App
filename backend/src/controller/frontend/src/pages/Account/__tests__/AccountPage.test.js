@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import AccountPage from '../AccountPage'; // Adjust the path as necessary
-import FeedApi from '../../../services/FeedApi';
+import { getMyFeed } from '../../../services/FeedApi.js';
 import { useNavigate } from 'react-router-dom';
 
 // Mocking the navigation and Feed API
@@ -27,7 +27,7 @@ describe('AccountPage', () => {
   });
 
   test('fetches and displays user posts', async () => {
-    FeedApi.getMyFeed.mockResolvedValue([
+    getMyFeed.mockResolvedValue([
       { _id: '1', owner: 'username', title: 'Post Title 1', description: 'Description 1', tags: ['tag1'], course: 'CIS 101', lookingFor: 3, modeOfCollab: 'Online', createdAt: '2021-01-01T00:00:00Z' }
     ]);
     render(<AccountPage />);
@@ -37,7 +37,7 @@ describe('AccountPage', () => {
   });
 
   test('displays a message when no posts are available', async () => {
-    FeedApi.getMyFeed.mockResolvedValue([]);
+    getMyFeed.mockResolvedValue([]);
     render(<AccountPage />);
     await waitFor(() => {
       expect(screen.queryByText(/Post Title/i)).not.toBeInTheDocument();
@@ -47,7 +47,7 @@ describe('AccountPage', () => {
   test('handles navigation to edit post when edit is clicked', async () => {
     const navigate = jest.fn();
     useNavigate.mockImplementation(() => navigate);
-    FeedApi.getMyFeed.mockResolvedValue([
+    getMyFeed.mockResolvedValue([
       { _id: '1', owner: 'username', title: 'Post Title 1', description: 'Description 1', tags: ['tag1'], course: 'CIS 101', lookingFor: 3, modeOfCollab: 'Online', createdAt: '2021-01-01T00:00:00Z' }
     ]);
     render(<AccountPage />);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { rootURL, setHeaders } from '../utils/ApiUtils';
 
-const getFeed = async () => {
+export const getFeed = async () => {
   let response;
   try {
     response = await axios.get(`${rootURL}/posts`);
@@ -19,7 +19,7 @@ const getFeed = async () => {
   return response.data;
 };
 
-const getMyFeed = async () => {
+export const getMyFeed = async () => {
   let response;
   setHeaders();
   try {
@@ -37,10 +37,3 @@ const getMyFeed = async () => {
   }
   return response.data;
 };
-
-const apiFunctions = {
-  getFeed,
-  getMyFeed,
-};
-
-export default apiFunctions;

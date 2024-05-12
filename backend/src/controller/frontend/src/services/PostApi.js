@@ -86,4 +86,3 @@ export const getPost = async (postId) => {
   }
   return response.data;
 };
-

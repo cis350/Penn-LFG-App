@@ -1,5 +1,5 @@
 import axios from 'axios';
-import FeedApi from '../FeedApi';  // Adjust the import path as necessary
+import { getFeed, getMyFeed } from '../FeedApi';  // Adjust the import path as necessary
 import { loginUser, registerUser, verifyUser, logoutUser } from '../AuthApi';
 import { createPost, updatePost, deletePost, getPost } from '../PostApi';
 import { rootURL } from '../../utils/ApiUtils';
@@ -125,7 +125,7 @@ describe('FeedApi', () => {
       ];
       axios.get.mockResolvedValue({ data: posts });
 
-      const result = await FeedApi.getFeed();
+      const result = await getFeed();
 
       expect(axios.get).toHaveBeenCalledWith('http://localhost:5050/posts');
       expect(result).toEqual(posts);
@@ -137,7 +137,7 @@ describe('FeedApi', () => {
         Promise.reject(new Error(errorMessage))
       );
 
-      const result = await FeedApi.getFeed();
+      const result = await getFeed();
 
       expect(axios.get).toHaveBeenCalledWith('http://localhost:5050/posts');
       expect(result).toEqual(null);
@@ -152,7 +152,7 @@ describe('FeedApi', () => {
       ];
       axios.get.mockResolvedValue({ data: myPosts });
 
-      const result = await FeedApi.getMyFeed();
+      const result = await getMyFeed();
 
       expect(axios.get).toHaveBeenCalledWith('http://localhost:5050/myposts');
       expect(result).toEqual(myPosts);
@@ -167,7 +167,7 @@ describe('FeedApi', () => {
         }
       });
 
-      const result = await FeedApi.getMyFeed();
+      const result = await getMyFeed();
 
       expect(axios.get).toHaveBeenCalledWith('http://localhost:5050/myposts');
       expect(result).toEqual({

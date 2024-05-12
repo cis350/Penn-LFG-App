@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PostCardComponent from '../../components/Feed/PostCardComponent.jsx'
 import './FeedPage.css';
-import FeedApi from '../../services/FeedApi.js';
+import { getFeed } from '../../services/FeedApi.js';
 
 function FeedPage() {
   const [posts, setPosts] = useState([
@@ -18,7 +18,7 @@ function FeedPage() {
   // Placeholder for fetching data from the backend
   useEffect(() => {
     const fetchPosts = async () => {
-      let feedArray = await FeedApi.getFeed(); // Correctly await the promise
+      let feedArray = await getFeed(); // Correctly await the promise
       if (feedArray && Array.isArray(feedArray)) {
         setPosts(feedArray);
       } else {
