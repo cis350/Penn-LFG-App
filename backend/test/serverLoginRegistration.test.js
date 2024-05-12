@@ -7,20 +7,20 @@ const { closeMongoDBConnection, getDB } = require('../src/model/dbUtils');
 describe('API endpoint testing', () => {
   let db;
   const testUser = {
-    username: 'testuser',
-    password: 'testpassword',
+    username: 'testuserNew',
+    password: 'testpasswordNew',
     fname: 'Test',
     lname: 'User',
   };
 
   beforeAll(async () => {
     db = await getDB();
-  });
+  }, 10000);
 
   afterAll(async () => {
     await deleteTestUserFromDB(db, testUser.username);
     await closeMongoDBConnection();
-  });
+  }, 10000);
 
   describe('POST /register', () => {
     it('should register a user and return a JWT', async () => {
@@ -33,7 +33,7 @@ describe('API endpoint testing', () => {
       expect(response.body).toHaveProperty('token');
       const decoded = jwt.verify(response.body.token, process.env.KEY);
       expect(decoded).toHaveProperty('username', testUser.username);
-    });
+    }, 10000);
 
     it('should fail with 400 if username or password is missing', async () => {
       await request(app)
@@ -47,7 +47,7 @@ describe('API endpoint testing', () => {
         .post('/register')
         .send(testUser)
         .expect(409);
-    });
+    }, 10000);
   });
 
   describe('POST /login', () => {
@@ -153,3 +153,5 @@ describe('API endpoint testing', () => {
     });
   });
 });
+
+

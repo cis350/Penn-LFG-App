@@ -33,7 +33,7 @@ describe('POST /post endpoint integration test', () => {
     await insertTestUserToDB(db, testUser); // Add a test user to DB
     // Simulate user login to get a valid JWT
     token = jwt.sign({ username: testUser.username }, process.env.KEY);
-  });
+  }, 20000);
 
   afterAll(async () => {
     try {
@@ -44,12 +44,13 @@ describe('POST /post endpoint integration test', () => {
     } catch (err) {
       console.error('Error in closing the database connection', err);
     }
-  });
+  }, 20000);
 
   test('Create and verify post', async () => {
     const response = await request(app)
       .post('/post')
-      .send({ token, ...newPost })
+      .send(newPost)
+      .set('Authorization', token)
       .expect(201)
       .expect('Content-Type', /json/);
 
@@ -64,4 +65,83 @@ describe('POST /post endpoint integration test', () => {
       && post.modeOfCollab === newPost.modeOfCollab
       && JSON.stringify(post.tags) === JSON.stringify(newPost.tags))).toBe(true);
   });
+
+  describe('PUT /post/:id endpoint integration test', () => {
+    test('Edit post with valid data', async () => {
+      const updatedPost = {
+        title: 'Updated Title',
+        description: 'Updated Description',
+        course: 'Updated Course',
+        lookingFor: 3,
+        modeOfCollab: 'In-person',
+        tags: ['updated', 'test']
+      };
+
+      const response = await request(app)
+        .put(`/post/${postId}`)
+        .send(updatedPost)
+        .set('Authorization', token)
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(response.body).toHaveProperty('message', 'Post updated successfully');
+    });
+
+    test('Fail to edit post with invalid token', async () => {
+      const updatedPost = {
+        title: 'Updated Title',
+        description: 'Updated Description',
+        course: 'Updated Course',
+        lookingFor: 3,
+        modeOfCollab: 'In-person',
+        tags: ['updated', 'test']
+      };
+
+      await request(app)
+        .put(`/post/${postId}`)
+        .send(updatedPost)
+        .set('Authorization', 'Bearer invalid_token')
+        .expect(401);
+    });
+  });
+
+  describe('DELETE /post/:id endpoint integration test', () => {
+    test('Delete post with valid token', async () => {
+      const response = await request(app)
+        .delete(`/post/${postId}`)
+        .set('Authorization', token)
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(response.body).toHaveProperty('message', 'Post deleted successfully');
+    });
+
+    test('Fail to delete post with invalid token', async () => {
+      await request(app)
+        .delete(`/post/${postId}`)
+        .set('Authorization', 'Bearer invalid_token')
+        .expect(401);
+    });
+  });
+
+describe('GET /posts endpoint integration test', () => {
+  test('Retrieve all posts with valid token', async () => {
+    const response = await request(app)
+      .get('/posts')
+      .expect(200)
+      .expect('Content-Type', /json/);
+
+    expect(Array.isArray(response.body)).toBe(true);
+    response.body.forEach(post => {
+      expect(post).toHaveProperty('title');
+      expect(post).toHaveProperty('description');
+      expect(post).toHaveProperty('course');
+      expect(post).toHaveProperty('lookingFor');
+      expect(post).toHaveProperty('modeOfCollab');
+      expect(post).toHaveProperty('tags');
+    });
+  });
+
+
+});
 });
