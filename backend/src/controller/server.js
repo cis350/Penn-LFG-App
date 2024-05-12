@@ -7,12 +7,23 @@ const jwtAuth = require('./controllerUtils/jwtAuth');
 const posts = require('../model/posts');
 
 const app = express();
+/**
+ * Initialize the Express application and set up middleware for JSON parsing and CORS handling.
+ */
+
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 app.use(cors());
 
 // REGISTER ENDPOINT
+/**
+ * Route to handle user registration
+ * @route POST /register
+ * @param {express.Request} req - The request object, containing the username, password, first name, and last name.
+ * @param {express.Response} res - The response object.
+ * @returns {Promise<express.Response>} The result of the registration process.
+ */
 app.post('/register', async (req, res) => {
   // retrieve body input parameters
   const {
@@ -54,6 +65,13 @@ app.post('/register', async (req, res) => {
 });
 
 // LOGIN ENDPOINT
+/**
+ * Route to handle user login
+ * @route POST /login
+ * @param {express.Request} req - The request object, containing the username and password.
+ * @param {express.Response} res - The response object.
+ * @returns {Promise<express.Response>} The result of the login process.
+ */
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   // Checking for the presence of username and password
@@ -91,6 +109,14 @@ app.post('/login', async (req, res) => {
 });
 
 // VERIFY AUTHENTICATION ENDPOINT - Check if a user has a valid JWT token
+/**
+ * Route to verify user authentication
+ * @route POST /verify
+ * @param {express.Request} req - The request object, containing the JWT token.
+ * @param {express.Response} res - The response object.
+ * @returns {Promise<express.Response>} The result of the verification process.
+ */
+
 app.post('/verify', async (req, res) => {
   const token = req.headers.authorization;
   if (!token) {
@@ -111,6 +137,13 @@ app.post('/verify', async (req, res) => {
 });
 
 // LOGOUT ENDPOINT
+/**
+ * Route to handle user logout
+ * @route POST /logout
+ * @param {express.Request} req - The request object, containing the JWT token.
+ * @param {express.Response} res - The response object.
+ * @returns {Promise<express.Response>} The result of the logout process.
+ */
 app.post('/logout', async (req, res) => {
   // verify the session
   console.log('logout', req.headers.authorization);
@@ -136,6 +169,13 @@ app.post('/logout', async (req, res) => {
 });
 
 // POST ENDPOINT - Create a Post
+/**
+ * Route to handle the creation of a post
+ * @route POST /post
+ * @param {express.Request} req - The request object, containing the JWT token.
+ * @param {express.Response} res - The response object.
+ * @returns {Promise<express.Response>} The result of the creation of the post.
+ */
 app.post('/post', async (req, res) => {
   const token = req.headers.authorization;
   const {
@@ -203,6 +243,13 @@ app.post('/post', async (req, res) => {
 });
 
 // POST ENDPOINT - Edit a post
+/**
+ * Route to handle the editing of a post
+ * @route PUT /post/:id
+ * @param {express.Request} req - The request object, containing the JWT token.
+ * @param {express.Response} res - The response object.
+ * @returns {Promise<express.Response>} The result of the editing of the post.
+ */
 app.put('/post/:id', async (req, res) => {
   const token = req.headers.authorization;
   const postId = req.params.id;
@@ -250,6 +297,13 @@ app.put('/post/:id', async (req, res) => {
 });
 
 // POST ENDPOINT - Delete a post
+/**
+ * Route to handle the deletion of a post
+ * @route DELETE /post/:postId
+ * @param {express.Request} req - The request object, containing the JWT token.
+ * @param {express.Response} res - The response object.
+ * @returns {Promise<express.Response>} The result of the deletion of the post.
+ */
 app.delete('/post/:postId', async (req, res) => {
   const { postId } = req.params;
   const token = req.headers.authorization;
@@ -287,6 +341,13 @@ app.delete('/post/:postId', async (req, res) => {
   }
 });
 
+/**
+ * Route to handle the retrieval of all posts
+ * @route GET /posts
+ * @param {express.Request} req - The request object.
+ * @param {express.Response} res - The response object.
+ * @returns {Promise<express.Response>} The result of the retrieval of all posts.
+ */
 app.get('/posts', async (req, res) => {
   try {
     const allPosts = await posts.getAllPosts();
@@ -297,6 +358,13 @@ app.get('/posts', async (req, res) => {
   }
 });
 
+/**
+ * Route to handle the retrieval of all posts by a user
+ * @route GET /myposts
+ * @param {express.Request} req - The request object, containing the JWT token.
+ * @param {express.Response} res - The response object.
+ * @returns {Promise<express.Response>} The result of the retrieval of all posts by a user.
+ */
 app.get('/myposts', async (req, res) => {
   try {
     const token = req.headers.authorization;
@@ -310,6 +378,13 @@ app.get('/myposts', async (req, res) => {
   }
 });
 
+/**
+ * Route to handle the retrieval of a single post by its ID
+ * @route GET /mypost/:postId
+ * @param {express.Request} req - The request object, containing the post ID.
+ * @param {express.Response} res - The response object.
+ * @returns {Promise<express.Response>} The result of the retrieval of the single post.
+ */
 app.get('/mypost/:postId', async (req, res) => {
   const { postId } = req.params;
   try {
