@@ -10,7 +10,7 @@ Features:
 - Post Creation: Users can create posts that will appear on their feed
 
 How to view:
-- Visit https://pennlfg-4fcf469ce489.herokuapp.com/
+- Visit the [deployed app on Heroku](https://penn-lfg-83d73b36926c.herokuapp.com/)
 
 How to run:
 
