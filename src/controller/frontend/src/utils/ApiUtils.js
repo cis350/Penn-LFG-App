@@ -10,4 +10,4 @@ export const setHeaders = () => {
   axios.defaults.headers.common.Authorization = localStorage.getItem('app-token');
 };
 
-export const rootURL = 'https://pennlfg-4fcf469ce489.herokuapp.com/api';
+export const rootURL = 'https://penn-lfg-83d73b36926c.herokuapp.com/api';
