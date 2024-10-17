@@ -21,12 +21,20 @@
     min-width: 300px;
     padding: 16px 0; /* Larger padding */
     border-radius: 10px; /* More pronounced rounded corners */
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
   }
   
   /* Small button variant */
   .custom-button.small {
     padding: 8px 16px; /* Smaller padding */
     border-radius: 4px; /* Standard rounded corners */
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
   }
 
   .custom-button.cancel {
@@ -36,6 +44,10 @@
     padding: 8px 16px; /* Padding around the text */
     cursor: pointer; /* Cursor indicates clickable */
     border-radius: 4px; /* Rounded corners for the button */
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
 }
 
 .custom-button.edit {
@@ -48,7 +60,8 @@
   padding: 8px 16px; /* Padding around the text */
   cursor: pointer; /* Cursor indicates clickable */
   border-radius: 4px; /* Rounded corners for the button */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
 }
-
-
-  

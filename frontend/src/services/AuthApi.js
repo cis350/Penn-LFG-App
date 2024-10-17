@@ -81,8 +81,9 @@ export const verifyUser = async () => {
  * It sets the necessary headers before making the request.
  * If the request is successful, it returns the response status.
  * In case of an error (e.g., network issues, server errors), it logs the error message,
- * checks if the database is offline (no response from server), and returns a structured error object.
- * This function is crucial for maintaining secure access to features that require user authentication.
+ * checks if the database is offline (no response from server), and returns a structured error
+ * object. This function is crucial for maintaining secure access to features that require user
+ * authentication.
  */
 
 export const logoutUser = async () => {

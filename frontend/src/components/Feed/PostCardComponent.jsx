@@ -1,11 +1,13 @@
 // PostCardComponent.jsx
 import React from 'react';
 import './css/PostCardComponent.css';
-import moment from 'moment-timezone';
 import CustomButton from '../CustomButton';
 
 function convertToEST(dateString) {
-  return moment(dateString).tz("America/New_York").format('MM/DD/YYYY hh:mm:ss A');
+  const date = new Date(dateString);
+  const options = { timeZone: 'America/New_York', hour12: true, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  const estDateTime = date.toLocaleString('en-US', options);
+  return estDateTime;
 }
 
 function PostCardComponent({ username, title, description, tags, course, groupSize, collabMode, time, onEdit, currentUser }) {

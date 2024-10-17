@@ -14,7 +14,6 @@ const dbUtils = require('./dbUtils');
 
 
 const addPost = async (username, title, description, course, lookingFor, modeOfCollab, tags) => {
-  console.log('add post got called');
   // Create a new post
   const db = await dbUtils.getDB();
   const postsCollection = db.collection('Post');
@@ -79,7 +78,6 @@ const deletePost = async (postId) => {
  * @returns {Promise<Array>} A promise that resolves to an array of all posts.
  */
 const getAllPosts = async () => {
-  console.log('get all posts got called');
   const db = await dbUtils.getDB();
   const postsCollection = db.collection('Post');
   const allPosts = await postsCollection.find({}).sort({ createdAt: -1 }).toArray();
