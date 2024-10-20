@@ -1,4 +1,4 @@
-const backendController = require('./src/controller/server');
+const backendController = require('./src/controller/server.js');
 
 const port = process.env.PORT || 5050;
 
