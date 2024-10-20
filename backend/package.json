@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --coverage",
     "start": "node index.js",
-    "lint": "eslint \"**/*.js\" --ignore-pattern node_modules/"
+    "lint": "eslint \"**/*.js\" --ignore-pattern node_modules/",
+    "build": "npm install && cd src/controller/frontend && npm install && npm run build"
   },
   "jest": {
     "testEnvironment": "node"
@@ -18,7 +19,8 @@
   "keywords": [
     "mongodb",
     "expressjs",
-    "nodejs"
+    "nodejs",
+    "heroku"
   ],
   "author": "Alain Welliver <alainw@seas.upenn.edu>",
   "license": "ISC",
