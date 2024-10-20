@@ -1,17 +1,17 @@
-/* PostCardComponent.css */
 .post-card {
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     padding: 20px;
-    font-family: Arial, sans-serif;
-    font-family: Inter;
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
     position: relative;
-  }
+    width: 100%;
+}
   
   .post-card h2 {
     margin-top: 0;

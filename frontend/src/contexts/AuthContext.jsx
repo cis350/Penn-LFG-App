@@ -11,6 +11,9 @@ import FeedPage from '../pages/Feed/FeedPage';
 import AccountPage from '../pages/Account/AccountPage';
 import CreatePostPage from '../pages/CreatePost/CreatePostPage';
 import EditPostPage from '../pages/EditPost/EditPostPage';
+import AboutPage from '../pages/About/AboutPage';
+import ContactPage from '../pages/Contact/ContactPage';
+import LandingPage from '../pages/Landing/LandingPage';
 
 /**
  * The login/logout component is stateful
@@ -121,7 +124,8 @@ function AuthContext() {
       <>
         <Header isLoggedIn={false} />
         <Routes>
-          <Route path="/" element={<WelcomePage />} />
+          <Route path="/" element={<LandingPage isLoggedIn={false}/>} />
+          <Route path="/welcome" element={<WelcomePage />} />
           <Route
             path="/login"
             element={(
@@ -150,7 +154,9 @@ function AuthContext() {
               />
             )}
           />
-          <Route path="/home" element={<Navigate to="/" />} />
+          <Route path="/home" element={<Navigate to="/welcome" />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </>
     );
@@ -159,14 +165,16 @@ function AuthContext() {
     <>
       <Header isLoggedIn={true} onLogout={handleLogout} />
       <Routes>
+        <Route path="/" element={<LandingPage isLoggedIn={true} />} />
         <Route path="/feed" element={<FeedPage />} />
         <Route path="/create-post" element={<CreatePostPage />} />
         <Route path="*" element={<Navigate to="/feed" />} />
-        <Route path="/" element={<Navigate to="/feed" />} />
         <Route path="/login" element={<Navigate to="/feed" />} />
         <Route path="/register" element={<Navigate to="/feed" />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="/edit-post" element={<EditPostPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </>
   );

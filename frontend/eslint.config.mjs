@@ -35,6 +35,9 @@ export default [
     },
   },
   {
+    indent: ["error", 4],
+  },
+  {
     settings: {
       'import/ignore': ['react-native'], 
       "import/parsers": {

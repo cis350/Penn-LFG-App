@@ -3,6 +3,7 @@ import PostCardComponent from '../../components/Feed/PostCardComponent.jsx';
 import './AccountPage.css'; 
 import { getMyFeed } from '../../services/FeedApi.js';
 import { useNavigate } from 'react-router-dom'; 
+
 /**
  * AccountPage Component
  * This component is responsible for displaying the user's posts on their account page.
@@ -36,7 +37,7 @@ function AccountPage() {
 
   return (
     <div className="account-page">
-      <h1 className="account-header">My Posts</h1>
+      <h1 className="account-header">My LFG Posts</h1>
       {posts.map((post, index) => (
         <PostCardComponent
           key={index}

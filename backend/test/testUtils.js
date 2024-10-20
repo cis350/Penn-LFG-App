@@ -1,12 +1,6 @@
 /**
  * Utility functions for testing
  */
-// const testUser = {
-//   username: 'testUser',
-//   password: 'cis3500',
-//   fname: 'Adam',
-//   lname: 'Nomani',
-// };  // Removed unused variable warning by removing or exporting if needed
 
 /**
  * Adds a test student to the DB

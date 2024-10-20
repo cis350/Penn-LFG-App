@@ -6,15 +6,17 @@ import CustomButton from './CustomButton';
 function Navbar({ isLoggedIn, onLogout }) {
   const handleClick = (event) => {
     event.preventDefault();
-    onLogout(); // Call the passed-in login handler
+    onLogout();
   };
 
   return (
     <nav className="navbar">
       {isLoggedIn ? (
         <>
-          <Link to="/create-post" className="active-link">Create Posts +</Link>
-          <Link to="/account" className="active-link">My Account</Link>
+          <Link to="/feed" className="active-link">My Feed</Link>
+          <Link to="/create-post" className="active-link">+ New Post</Link>
+          <Link to="/account" className="active-link">Me</Link>
+          <Link to="/contact" className="active-link">Contact</Link>
           <CustomButton variant="small" onClick={handleClick}>Logout</CustomButton>
         </>
       ) : (

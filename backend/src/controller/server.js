@@ -7,10 +7,6 @@ const jwtAuth = require('./controllerUtils/jwtAuth');
 const posts = require('../model/posts');
 
 const app = express();
-/**
- * Initialize the Express application and set up middleware for JSON parsing and CORS handling.
- */
-
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
@@ -20,7 +16,8 @@ app.use(cors());
 /**
  * Route to handle user registration
  * @route POST /register
- * @param {express.Request} req - The request object, containing the username, password, first name, and last name.
+ * @param {express.Request} req - The request object, containing the username,
+ *                                password, first name, and last name.
  * @param {express.Response} res - The response object.
  * @returns {Promise<express.Response>} The result of the registration process.
  */

@@ -7,13 +7,13 @@
   }
   
   .brand-logo {
-    margin: 0; /* Adjusting default margin for heading elements */
-    line-height: 30px; /* This sets the line height to 150% of the font-size */
+    margin: 0;
+    line-height: 30px;
   }
   
   .brand-penn {
     color: #000;
-    font-family: Alike, sans-serif; /* Fallback font in case 'Alike' isn't available */
+    font-family: Alike, sans-serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
@@ -21,7 +21,7 @@
   
   .brand-lfg {
     color: #000;
-    font-family: 'Krona One', sans-serif; /* Fallback font in case 'Krona One' isn't available */
+    font-family: 'Krona One', sans-serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 400;

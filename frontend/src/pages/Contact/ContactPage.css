@@ -1,0 +1,30 @@
+.contact-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    max-width: 800px;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.contact-page h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.contact-page__description {
+    font-size: 18px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.create-page__button-link {
+    text-decoration: none;
+    color: #fff;
+}

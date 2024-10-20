@@ -10,16 +10,7 @@ import { getFeed } from '../../services/FeedApi.js';
  * The posts are then displayed using the PostCardComponent.
  */
 function FeedPage() {
-  const [posts, setPosts] = useState([
-    { username: 'testUser',
-      title: 'test group title',
-      description: 'description title',
-      tags: ['tag1', 'tag2'],
-      course: 'CIS 3500',
-      lookingFor: 2,
-      modeOfCollab: 'in-person'
-    }
-  ]);
+  const [posts, setPosts] = useState([]);
 
   // Placeholder for fetching data from the backend
   useEffect(() => {
@@ -38,7 +29,7 @@ function FeedPage() {
 
   return (
     <div className="feed-page">
-      <h1 className="feed-header">My Feed</h1> {/* Apply class to header */}
+      <h1 className="feed-header">Explore LFG Posts</h1>
       {posts.map((post, index) => (
         <PostCardComponent
             key={index}
