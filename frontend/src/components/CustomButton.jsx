@@ -1,7 +1,6 @@
 import React from 'react';
 import './css/CustomButton.css';
 
-// Assume onClick and type are the only props used by button, add more if needed
 function CustomButton({
   variant, type, children, onClick,
 }) {

@@ -1,12 +1,8 @@
-/**
-* @jest-environment jsdom
-*/
-
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Header from '../Header'; // Adjust the path as necessary
+import Header from '../Header';
 
 describe('Header', () => {
   test('renders Header with navigation links', () => {

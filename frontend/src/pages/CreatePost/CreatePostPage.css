@@ -5,27 +5,27 @@
     padding: 20px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     border-radius: 8px;
-    position: relative; /* Ensures child elements positioned absolutely are relative to this */
+    position: relative;
 }
 
-.header-actions { /* Assuming you add a div with this class for your action buttons */
+.header-actions {
     position: absolute;
-    right: 20px;  /* Aligns the button to the right */
-    top: 20px;    /* Aligns the button to the top */
+    right: 20px;
+    top: 20px;
 }
 
 .custom-button.cancel {
-    background-color: rgb(136, 16, 16); /* Dark red background */
-    color: white; /* White text */
-    border: none; /* No border */
-    padding: 8px 16px; /* Padding around the text */
-    cursor: pointer; /* Cursor indicates clickable */
-    border-radius: 4px; /* Rounded corners for the button */
+    background-color: rgb(136, 16, 16);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
 }
 
 .create-post-page h1 {
-    text-align: center; /* Centers your page title */
-    padding-top: 40px; /* Adds space above the title to not overlap with the button */
+    text-align: center;
+    padding-top: 40px;
 }
 
 .create-post-page form {
@@ -62,7 +62,7 @@
 
 .create-post-page button {
     padding: 10px;
-    background-color: black; /* Ensures consistent color coding */
+    background-color: black;
     color: white;
     border: none;
     border-radius: 5px;

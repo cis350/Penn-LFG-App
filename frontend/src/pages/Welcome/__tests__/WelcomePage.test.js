@@ -1,12 +1,8 @@
-/**
-* @jest-environment jsdom
-*/
-
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter as Router } from 'react-router-dom';
-import WelcomePage from '../WelcomePage'; // Adjust the path as necessary
+import WelcomePage from '../WelcomePage';
 
 const renderWithRouter = (ui, { route = '/' } = {}) => {
   window.history.pushState({}, 'Test page', route);

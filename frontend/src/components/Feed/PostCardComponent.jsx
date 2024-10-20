@@ -1,4 +1,3 @@
-// PostCardComponent.jsx
 import React from 'react';
 import './css/PostCardComponent.css';
 import CustomButton from '../CustomButton';

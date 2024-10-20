@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import RegistrationPage from '../RegistrationPage'; // Adjust the path as necessary
+import RegistrationPage from '../RegistrationPage';
 
 describe('RegistrationPage', () => {
   test('renders input fields for registration details', () => {

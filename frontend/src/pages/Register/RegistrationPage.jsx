@@ -1,6 +1,6 @@
 import React from 'react';
 import './RegistrationPage.css';
-import CustomButton from '../../components/CustomButton'; // Assuming you've created this button component
+import CustomButton from '../../components/CustomButton';
 
 /**
  * RegistrationPage Component
@@ -12,7 +12,7 @@ function RegistrationPage({ onRegister, username, onUsernameChange,
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onRegister(); // Call the passed-in register handler
+    onRegister();
   };
 
   return (

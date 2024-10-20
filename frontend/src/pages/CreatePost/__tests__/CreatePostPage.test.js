@@ -56,7 +56,7 @@ describe('CreatePostPage', () => {
             'Description of new course',
             'CIS 3500',
             3,
-            '', // Assuming mode of communication was not selected in the test
+            '',
             []
         );
     });

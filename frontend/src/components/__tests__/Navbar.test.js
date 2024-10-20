@@ -1,12 +1,8 @@
-/**
-* @jest-environment jsdom
-*/
-
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Navbar from '../Navbar'; // Adjust the path as necessary
+import Navbar from '../Navbar';
 
 describe('Navbar', () => {
   test('renders Navbar with appropriate links when not logged in', () => {

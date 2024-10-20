@@ -16,8 +16,8 @@ jest.mock('react-router-dom', () => ({
 
 describe('EditPostPage', () => {
   beforeEach(() => {
-    Storage.prototype.getItem = jest.fn(() => '1'); // Mocking localStorage.getItem for 'posts'
-    useNavigate.mockImplementation(() => jest.fn()); // Mocking navigate function
+    Storage.prototype.getItem = jest.fn(() => '1');
+    useNavigate.mockImplementation(() => jest.fn());
     getPost.mockResolvedValue({
       post: {
         title: 'Existing Post',

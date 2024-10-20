@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import AccountPage from '../AccountPage'; // Adjust the path as necessary
+import AccountPage from '../AccountPage';
 import { getMyFeed } from '../../../services/FeedApi.js';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,9 +15,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('AccountPage', () => {
   beforeEach(() => {
-    // Mock localStorage
     Storage.prototype.getItem = jest.fn(() => 'username');
-    // Mock the navigation function
     useNavigate.mockImplementation(() => jest.fn());
   });
 
@@ -52,7 +50,7 @@ describe('AccountPage', () => {
     ]);
     render(<AccountPage />);
     await waitFor(() => {
-      const editButton = screen.getByText(/edit/i); // Adjust if your actual button text or interaction is different.
+      const editButton = screen.getByText(/edit/i);
       fireEvent.click(editButton);
     });
     expect(navigate).toHaveBeenCalledWith('/edit-post');

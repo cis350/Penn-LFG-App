@@ -12,15 +12,14 @@ import { getFeed } from '../../services/FeedApi.js';
 function FeedPage() {
   const [posts, setPosts] = useState([]);
 
-  // Placeholder for fetching data from the backend
   useEffect(() => {
     const fetchPosts = async () => {
-      let feedArray = await getFeed(); // Correctly await the promise
+      let feedArray = await getFeed();
       if (feedArray && Array.isArray(feedArray)) {
         setPosts(feedArray);
       } else {
         console.error('Failed to fetch posts:', feedArray);
-        setPosts([]); // Handle errors or unexpected responses
+        setPosts([]);
       }
     };
     

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createPost } from '../../services/PostApi';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 import CustomButton from '../../components/CustomButton';
 import './CreatePostPage.css';
 /**
@@ -13,7 +13,7 @@ import './CreatePostPage.css';
  */
 
 function CreatePostPage() {
-    const navigate = useNavigate(); // Hook for navigating
+    const navigate = useNavigate();
     const [postData, setPostData] = useState({
         title: '',
         description: '',
@@ -37,13 +37,13 @@ function CreatePostPage() {
 
     const handleTagInput = (e) => {
         if (e.key === 'Enter') {
-            e.preventDefault(); // Prevent the form from being submitted
+            e.preventDefault();
             if (e.target.value.trim() !== '') {
                 setPostData({
                     ...postData,
-                    tags: [...postData.tags, e.target.value.trim()] // Also trim to remove unnecessary spaces
+                    tags: [...postData.tags, e.target.value.trim()]
                 });
-                e.target.value = ''; // Clear the input after adding the tag
+                e.target.value = '';
             }
         }
     };
@@ -69,7 +69,7 @@ function CreatePostPage() {
     };
 
     const handleCancel = () => {
-        navigate('/feed'); // Navigate back to the feed page
+        navigate('/feed');
     };
 
     return (

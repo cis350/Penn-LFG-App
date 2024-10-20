@@ -2,32 +2,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 75vh; /* Full viewport height */
+    height: 75vh;
   }
   
   .login-container {
     text-align: center;
-    max-width: 300px; /* Adjust width as needed */
+    max-width: 300px;
   }
   
   .login-form {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Space between form items */
-    margin-top: 20px; /* Extra space above the form */
+    gap: 10px;
+    margin-top: 20px;
   }
   
   .login-form input {
     padding: 10px;
-    margin: 5px 0; /* Spacing between inputs */
-    border: 1px solid #ccc; /* Light grey border */
+    margin: 5px 0;
+    border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
-  /* Adjust the following class based on how you have styled your CustomButton */
-  .custom-button.large {
-    width: auto; /* Or specific width if preferred */
-    padding: 10px;
-    margin-top: 20px; /* Space between the form and the button */
-  }
-  

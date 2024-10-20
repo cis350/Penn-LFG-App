@@ -1,11 +1,11 @@
 .account-page {
-    max-width: 1200px; /* Limit the maximum width */
-    margin: 0 auto; /* Center the feed page on the screen */
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
     font-family: Inter, sans-serif;
   }
   
   .account-header {
-    text-align: left; /* Center the header text */
-    margin-bottom: 30px; /* Provide space between header and posts */
+    text-align: left;
+    margin-bottom: 30px;
   }

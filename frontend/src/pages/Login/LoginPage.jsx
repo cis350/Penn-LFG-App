@@ -1,6 +1,6 @@
 import React from 'react';
 import './LoginPage.css';
-import CustomButton from '../../components/CustomButton'; // Assuming you've created this button component
+import CustomButton from '../../components/CustomButton';
 
 /**
  * LoginPage Component
@@ -11,7 +11,7 @@ function LoginPage({ onLogin, username, onUsernameChange, password, onPasswordCh
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onLogin(); // Call the passed-in login handler
+    onLogin();
   };
   
   return (

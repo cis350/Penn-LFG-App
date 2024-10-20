@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getFeed, getMyFeed } from '../FeedApi';  // Adjust the import path as necessary
+import { getFeed, getMyFeed } from '../FeedApi';
 import { loginUser, registerUser, verifyUser, logoutUser } from '../AuthApi';
 import { createPost, updatePost, deletePost, getPost } from '../PostApi';
 import { rootURL } from '../../utils/ApiUtils';
@@ -311,4 +311,3 @@ describe('PostApi', () => {
     });
   });
 });
-
