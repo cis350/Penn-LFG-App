@@ -1,8 +1,7 @@
 Penn LFG!
 
 Overview:
-Penn LFG is a post based app where users can put up and interact with listings for group members whether it be for a class,
-club, intramural, or anything in between
+Penn LFG is a post based app where users can put up and interact with listings for group members whether it be for a course project, class homework assignment, or other course/study-related requests.
 
 Features: 
 - Log in: Users can log in of their accounts using their correct credentials 
